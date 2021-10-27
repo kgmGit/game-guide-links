@@ -1,4 +1,7 @@
 module.exports = {
+  configureWebpack: {
+    devtool: "source-map",
+  },
   outputDir: "../backend/public/app",
   publicPath: "/app",
   pages: {
