@@ -1,18 +1,54 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <b-form-input
+      v-model="searchStr"
+      placeholder="ゲーム名を入力"
+      @keypress.prevent.enter="pressEnter"
+    ></b-form-input>
+    <div class="mt-2">
+      <div v-for="game in games" :key="game.id">
+        <game :game="game" />
+      </div>
+    </div>
+    <b-modal title="確認" @ok="addGame" id="confirm"
+      >{{ searchStr }}を追加しますか？</b-modal
+    >
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { mapGetters } from "vuex";
+import Game from "@/components/home/Game";
 
 export default {
-  name: "Home",
   components: {
-    HelloWorld,
+    Game,
+  },
+  data() {
+    return {
+      searchStr: "",
+      games: [
+        { name: "noita" },
+        { name: "テイルズオブアライズ" },
+        { name: "New World" },
+        { name: "ドラゴンクエストⅪ" },
+        { name: "Back 4 Blood" },
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      isVerified: "auth/isVerified",
+    }),
+  },
+  methods: {
+    pressEnter() {
+      if (this.isVerified && !this.searchStr) return;
+      this.$bvModal.show("confirm");
+    },
+    addGame() {
+      console.log("add game!");
+    },
   },
 };
 </script>
