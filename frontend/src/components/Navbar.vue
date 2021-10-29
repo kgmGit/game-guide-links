@@ -33,7 +33,10 @@ export default {
     }),
   },
   methods: {
-    async logout() {},
+    async logout() {
+      this.$store.dispatch("message/setContent", "ログアウトしました");
+      await this.$store.dispatch("auth/logout");
+    },
   },
 };
 </script>
