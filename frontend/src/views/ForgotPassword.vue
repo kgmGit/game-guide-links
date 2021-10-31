@@ -59,13 +59,10 @@ export default {
 
         await this.$store
           .dispatch("auth/sendResetPasswordMail", this.form)
-          .then(() => {
-            this.$store.dispatch("message/setContent", "メールを送信しました");
-            this.$router.replace({ name: "Home" });
-          })
-          .catch(() => {
-            this.$router.replace({ name: "Error" });
-          });
+          .catch(() => {});
+
+        this.$store.dispatch("message/setContent", "メールを送信しました");
+        this.$router.replace({ name: "Home" });
       } finally {
         this.processing = false;
       }
