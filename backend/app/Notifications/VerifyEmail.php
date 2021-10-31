@@ -8,7 +8,7 @@ use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailFramework;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
 
-class VerifyEmail extends VerifyEmailFramework
+class VerifyEmail extends VerifyEmailFramework implements ShouldQueue
 {
     use Queueable;
 

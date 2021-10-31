@@ -8,7 +8,7 @@ use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordFramework;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
 
-class ResetPassword extends ResetPasswordFramework
+class ResetPassword extends ResetPasswordFramework implements ShouldQueue
 {
     use Queueable;
 
