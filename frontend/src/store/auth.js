@@ -49,7 +49,7 @@ const actions = {
       .get("/api/user")
       .then((response) => {
         commit("setIsAuth", true);
-        commit("setUser", response.data.data);
+        commit("setUser", response.data);
       })
       .catch(() => {
         commit("setIsAuth", false);
@@ -65,7 +65,7 @@ const actions = {
   async resetPassword(context, credentials) {
     await http.post("/reset-password", credentials);
   },
-  async updateUser({ dispatch }, credentials) {
+  async updateProfile({ dispatch }, credentials) {
     await http.put("/user/profile-information", credentials);
 
     await dispatch("me");

@@ -1,14 +1,13 @@
 <?php
 
-namespace Tests\Feature\Fortify;
+namespace Tests\Feature\User;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
-class LogoutTest extends TestCase
+class DeleteTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -18,11 +17,12 @@ class LogoutTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user);
-        $this->assertTrue(Auth::check());
+        $response = $this->json('DELETE', 'user');
 
-        $response = $this->json('POST', 'logout');
         $response->assertStatus(204);
 
         $this->assertGuest('web');
+
+        $this->assertNull(User::first());
     }
 }

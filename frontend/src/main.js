@@ -35,7 +35,7 @@ Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);
 
 const createApp = async () => {
-  store.dispatch("auth/me");
+  await store.dispatch("auth/me");
 
   new Vue({
     router,

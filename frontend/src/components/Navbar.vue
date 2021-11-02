@@ -30,6 +30,7 @@ export default {
     ...mapGetters({
       isAuth: "auth/isAuth",
       isVerified: "auth/isVerified",
+      user: "auth/user",
     }),
   },
   methods: {

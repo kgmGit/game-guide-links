@@ -18,17 +18,11 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update($user, array $input)
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ])->validateWithBag('updateProfileInformation');
+        Validator::make(
+            $input,
+            $this->rules($user),
+            $this->messages()
+        )->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
@@ -57,5 +51,38 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         $user->sendEmailVerificationNotification();
+    }
+
+    /**
+     * バリデーションルール
+     *
+     * @param mixed $user
+     * @return array
+     */
+    public function rules($user): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:20', Rule::unique('users')->ignore($user->id)],
+
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ]
+            ];
+    }
+
+    /**
+     * カスタムエラーメッセージ
+     *
+     * @return array
+     */
+    public function messages(): array
+    {
+        return [
+            'unique' => 'すでに登録されています',
+        ];
     }
 }
