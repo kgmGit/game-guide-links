@@ -165,7 +165,7 @@ class RegisterTest extends TestCase
             ],
             'NG_ユーザ名最大超え' => [
                 [
-                    'name' => Str::repeat('a', 255),
+                    'name' => Str::repeat('a', 21),
                     'email' => 'test@test.com',
                     'password' => 'password',
                     'password_confirmation' => 'password',
