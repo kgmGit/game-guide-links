@@ -4,7 +4,7 @@ namespace Tests\Feature\Fortify;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Models\User;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Hash;
