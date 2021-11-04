@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card>
-      <b-card-text>{{ game.name }}</b-card-text>
+      <b-card-text>{{ game.title }}</b-card-text>
     </b-card>
   </div>
 </template>
