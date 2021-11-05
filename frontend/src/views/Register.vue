@@ -11,7 +11,7 @@
               <ValidationProvider
                 immediate
                 vid="name"
-                rules="required|max:5"
+                rules="required|max:20"
                 v-slot="{ errors, valid }"
               >
                 <b-form-input
