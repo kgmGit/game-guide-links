@@ -5,6 +5,7 @@
       placeholder="ゲーム名を入力"
       @keypress.prevent.enter="pressEnter"
       autocomplete="off"
+      maxlength="30"
     ></b-form-input>
     <div class="mt-2">
       <transition-group name="games">
