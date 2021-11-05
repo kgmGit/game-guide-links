@@ -2,9 +2,11 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+
 import { BootstrapVue, IconsPlugin, ModalPlugin } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import {
   ValidationProvider,
   ValidationObserver,
@@ -13,6 +15,10 @@ import {
 } from "vee-validate";
 import { required, min, max, email, confirmed } from "vee-validate/dist/rules";
 import ja from "vee-validate/dist/locale/ja.json";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 Vue.config.productionTip = false;
 
@@ -33,6 +39,9 @@ extend("confirmed", confirmed);
 localize("ja", ja);
 Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);
+
+library.add(faUserSecret);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 const createApp = async () => {
   await store.dispatch("auth/me");
