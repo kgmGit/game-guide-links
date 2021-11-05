@@ -27,7 +27,7 @@ class IndexTest extends TestCase
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_お気に入り有り(): void
+    public function test正常系_クエリパラメータ有り_お気に入り有り_未ログイン(): void
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
@@ -49,6 +49,64 @@ class IndexTest extends TestCase
                     'id' => 1,
                     'title' => 'aabbcc',
                     'favorites_count' => 2,
+                    'favorited' => false,
+                ]
+            ]
+        ]);
+    }
+
+    public function test正常系_クエリパラメータ有り_お気に入り有り_お気に入り済み(): void
+    {
+        /** @var User $user1 */
+        $user1 = User::factory()->create();
+
+        /** @var Game $game */
+        $game = $user1->games()->create(['title' => 'aabbcc']);
+
+        $game->favorites()->saveMany([
+            $user1->favorites()->make(),
+        ]);
+
+        $this->actingAs($user1);
+        $response = $this->json('GET', 'api/games?title=bb');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => 1,
+                    'title' => 'aabbcc',
+                    'favorites_count' => 1,
+                    'favorited' => true,
+                ]
+            ]
+        ]);
+    }
+
+    public function test正常系_クエリパラメータ有り_お気に入り有り_お気に入りしていない(): void
+    {
+        /** @var User $user1 */
+        $user1 = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        /** @var Game $game */
+        $game = $user1->games()->create(['title' => 'aabbcc']);
+
+        $game->favorites()->saveMany([
+            $user2->favorites()->make(),
+        ]);
+
+        $this->actingAs($user1);
+        $response = $this->json('GET', 'api/games?title=bb');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => 1,
+                    'title' => 'aabbcc',
+                    'favorites_count' => 1,
+                    'favorited' => false,
                 ]
             ]
         ]);
