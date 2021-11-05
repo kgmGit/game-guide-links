@@ -7,6 +7,7 @@ import ForgotPassword from "@/views/ForgotPassword.vue";
 import ResetPassword from "@/views/ResetPassword.vue";
 import MyPage from "@/views/MyPage.vue";
 import MyPageProfile from "@/components/mypage/Profile.vue";
+import GameDetail from "@/views/GameDetail.vue";
 
 import Error from "@/views/Error.vue";
 
@@ -18,6 +19,7 @@ const routes = [
     name: "Home",
     component: Home,
   },
+
   {
     path: "/register",
     name: "Register",
@@ -38,6 +40,7 @@ const routes = [
     name: "ResetPassword",
     component: ResetPassword,
   },
+
   {
     path: "/mypage",
     name: "MyPage",
@@ -48,6 +51,13 @@ const routes = [
         component: MyPageProfile,
       },
     ],
+  },
+
+  {
+    path: "/games/:title",
+    name: "GameDetail",
+    component: GameDetail,
+    props: true,
   },
 
   {

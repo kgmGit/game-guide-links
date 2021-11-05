@@ -47,11 +47,45 @@ export default {
   },
   methods: {
     pressEnter() {
-      if (!this.processing && this.isVerified && !this.searchStr) return;
+      if (this.processing || !this.isVerified || !this.searchStr) return;
       this.$bvModal.show("confirm");
     },
     async addGame() {
-      console.log("addGame");
+      try {
+        this.processing = true;
+
+        const body = {
+          title: this.searchStr,
+        };
+
+        await http
+          .post("/api/games", body)
+          .then((response) => {
+            const game = response.data.data;
+
+            this.$store.dispatch("message/setContent", "ゲームを登録しました");
+            this.$router.push({
+              name: "GameDetail",
+              params: {
+                title: game.title,
+                game: game,
+              },
+            });
+          })
+          .catch((e) => {
+            if (e.response.status === 422) {
+              this.$store.dispatch(
+                "message/setContent",
+                "すでに登録されています"
+              );
+
+              return;
+            }
+            this.$router.replace({ name: "Error" });
+          });
+      } finally {
+        this.processing = false;
+      }
     },
     async getGames() {
       if (!this.searchStr) {

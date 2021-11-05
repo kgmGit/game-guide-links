@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Game\StoreRequest;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -40,14 +42,19 @@ class GameController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * ゲーム追加
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @return GameResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request): GameResource
     {
-        //
+        $validated = $request->validated();
+
+        $user = auth()->user();
+        $game = $user->games()->create($validated);
+
+        return new GameResource($game);
     }
 
     /**

@@ -22,4 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::middleware('verified')->group(function () {
+        Route::post('/games', [GameController::class, 'store']);
+    });
 });
