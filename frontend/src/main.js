@@ -17,7 +17,16 @@ import { required, min, max, email, confirmed } from "vee-validate/dist/rules";
 import ja from "vee-validate/dist/locale/ja.json";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as fasHeart,
+  faThumbsUp as fasThumbsUp,
+  faHeartBroken,
+  faPhoneSquareAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart as farHeart,
+  faThumbsUp as farThumbsUp,
+} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 Vue.config.productionTip = false;
@@ -40,7 +49,14 @@ localize("ja", ja);
 Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);
 
-library.add(faUserSecret);
+library.add(
+  fasHeart,
+  fasThumbsUp,
+  faHeartBroken,
+  faPhoneSquareAlt,
+  farHeart,
+  farThumbsUp
+);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 const createApp = async () => {
