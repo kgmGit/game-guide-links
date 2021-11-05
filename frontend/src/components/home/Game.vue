@@ -1,9 +1,14 @@
 <template>
-  <div>
+  <b-link
+    :to="{
+      name: 'GameDetail',
+      params: { title: game.title, game: game },
+    }"
+  >
     <b-card>
       <b-card-text>{{ game.title }}</b-card-text>
     </b-card>
-  </div>
+  </b-link>
 </template>
 
 <script>
