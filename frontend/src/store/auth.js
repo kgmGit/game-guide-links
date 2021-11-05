@@ -49,7 +49,7 @@ const actions = {
       .get("/api/user")
       .then((response) => {
         commit("setIsAuth", true);
-        commit("setUser", response.data);
+        commit("setUser", response.data.data);
       })
       .catch(() => {
         commit("setIsAuth", false);
