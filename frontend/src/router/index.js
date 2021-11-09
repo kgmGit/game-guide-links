@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 import Home from "@/views/Home.vue";
 import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
@@ -24,11 +25,25 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/isAuth"]) {
+        next(false);
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: Login,
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/isAuth"]) {
+        next(false);
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/forgot-password",
@@ -51,6 +66,13 @@ const routes = [
         component: MyPageProfile,
       },
     ],
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/isAuth"]) {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
 
   {
