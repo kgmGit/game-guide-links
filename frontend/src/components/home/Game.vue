@@ -2,7 +2,7 @@
   <b-link
     :to="{
       name: 'GameDetail',
-      params: { title: game.title, game: game },
+      params: { title: game.title },
     }"
   >
     <b-card>

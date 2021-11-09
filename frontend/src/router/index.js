@@ -57,7 +57,6 @@ const routes = [
     path: "/games/:title",
     name: "GameDetail",
     component: GameDetail,
-    props: true,
   },
 
   {

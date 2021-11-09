@@ -22,6 +22,7 @@ import {
   faThumbsUp as fasThumbsUp,
   faHeartBroken,
   faPhoneSquareAlt,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faHeart as farHeart,
@@ -55,7 +56,8 @@ library.add(
   faHeartBroken,
   faPhoneSquareAlt,
   farHeart,
-  farThumbsUp
+  farThumbsUp,
+  faTrashAlt
 );
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

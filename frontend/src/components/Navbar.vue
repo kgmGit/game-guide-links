@@ -35,8 +35,9 @@ export default {
   },
   methods: {
     async logout() {
-      this.$store.dispatch("message/setContent", "ログアウトしました");
       await this.$store.dispatch("auth/logout");
+      this.$store.dispatch("message/setContent", "ログアウトしました");
+      this.$router.replace({ name: "Login" });
     },
   },
 };

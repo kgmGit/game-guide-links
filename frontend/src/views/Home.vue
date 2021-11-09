@@ -14,9 +14,9 @@
         </div>
       </transition-group>
     </div>
-    <b-modal title="確認" @ok="addGame" id="confirm"
-      >{{ searchStr }}を追加しますか？</b-modal
-    >
+    <b-modal title="確認" hide-header @ok="addGame" id="confirm">
+      <div class="text-center">{{ searchStr }}を追加しますか？</div>
+    </b-modal>
   </div>
 </template>
 
@@ -69,7 +69,6 @@ export default {
               name: "GameDetail",
               params: {
                 title: game.title,
-                game: game,
               },
             });
           })
