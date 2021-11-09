@@ -34,6 +34,7 @@ class StoreTest extends TestCase
                 'title' => 'title',
                 'favorites_count' => 0,
                 'favorited' => false,
+                'owner' => true,
             ]
         ]);
     }
