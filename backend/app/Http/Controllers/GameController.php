@@ -58,14 +58,14 @@ class GameController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * ゲーム取得
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @return GameResource
      */
-    public function show($id)
+    public function show(Game $game): GameResource
     {
-        //
+        return new GameResource($game);
     }
 
     /**
