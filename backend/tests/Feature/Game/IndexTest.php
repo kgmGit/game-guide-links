@@ -200,4 +200,23 @@ class IndexTest extends TestCase
             'data' => []
         ]);
     }
+
+    public function test正常系_クエリパラメータ有り_未ログイン_所有者なしゲーム(): void
+    {
+        Game::factory()->create(['title' => 'bb']);
+        $response = $this->json('GET', 'api/games?title=bb');
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'id' => 1,
+                    'title' => 'bb',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ]
+            ]
+        ]);
+    }
 }
