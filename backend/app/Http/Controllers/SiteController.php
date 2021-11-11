@@ -19,6 +19,7 @@ class SiteController extends Controller
      */
     public function index(Game $game): AnonymousResourceCollection
     {
+        $game->load(['sites.user', 'sites.favorites', 'sites.likes']);
         return SiteResource::collection($game->sites);
     }
 

@@ -17,9 +17,9 @@ class GameResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'favorites_count' => $this->favorites()->count(),
+            'favorites_count' => $this->favorites->count(),
             'favorited' => auth()->check()
-                ? $this->favorites()->where('user_id', auth()->id())->exists()
+                ? !$this->favorites->where('user_id', auth()->id())->isEmpty()
                 : false,
             'owner' => auth()->check() ? $this->user_id == auth()->id() : false,
         ];

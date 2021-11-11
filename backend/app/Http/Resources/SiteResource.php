@@ -19,13 +19,13 @@ class SiteResource extends JsonResource
             'title' => $this->title,
             'url' => $this->url,
             'description' => $this->description,
-            'favorites_count' => $this->favorites()->count(),
+            'favorites_count' => $this->favorites->count(),
             'favorited' => auth()->check()
-                ? $this->favorites()->where('user_id', auth()->id())->exists()
+                ? !$this->favorites->where('user_id', auth()->id())->isEmpty()
                 : false,
-            'likes_count' => $this->likes()->count(),
+            'likes_count' => $this->likes->count(),
             'liked' => auth()->check()
-                ? $this->likes()->where('user_id', auth()->id())->exists()
+                ? !$this->likes->where('user_id', auth()->id())->isEmpty()
                 : false,
             'owner' => auth()->check() ? $this->user_id == auth()->id() : false,
             'owner_name' => $this->user ? $this->user->name : null,

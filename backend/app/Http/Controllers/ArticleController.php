@@ -18,6 +18,7 @@ class ArticleController extends Controller
      */
     public function index(Game $game): AnonymousResourceCollection
     {
+        $game->load(['articles.user', 'articles.favorites', 'articles.likes']);
         return ArticleResource::collection($game->articles);
     }
 

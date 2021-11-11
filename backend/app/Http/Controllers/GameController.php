@@ -26,7 +26,7 @@ class GameController extends Controller
             return GameResource::collection([]);
         }
 
-        $games = Game::where('title', 'LIKE', "%$title%")->limit(5)->get();
+        $games = Game::with(['favorites'])->where('title', 'LIKE', "%$title%")->limit(5)->get();
 
         return GameResource::collection($games);
     }
