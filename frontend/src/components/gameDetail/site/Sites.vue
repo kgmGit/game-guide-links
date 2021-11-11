@@ -15,7 +15,7 @@
             >新規登録</b-button
           >
 
-          <hr class="my-4" />
+          <hr v-if="sites.length > 0" class="my-4" />
         </div>
         <div
           v-for="site in getPaginateItems"
@@ -30,6 +30,7 @@
           />
         </div>
         <b-pagination
+          v-if="sites.length > 0"
           :total-rows="sites.length"
           v-model="currentPage"
           :per-page="perPage"
@@ -48,6 +49,7 @@
 import { mapGetters } from "vuex";
 import Site from "@/components/gameDetail/site/Site.vue";
 import AuthModal from "@/components/AuthModal.vue";
+import { http } from "@/Services/Http";
 
 export default {
   components: { Site, AuthModal },
@@ -74,6 +76,17 @@ export default {
   },
 
   methods: {
+    async fetchSites() {
+      const title = this.$route.params.title;
+      await http
+        .get("/api/games/" + title + "/sites")
+        .then((response) => {
+          this.sites = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+    },
     async clickLike(id) {
       if (this.processing) return;
 
@@ -151,19 +164,7 @@ export default {
   },
 
   async created() {
-    this.sites = [];
-    for (let i = 0; i < 197; i++) {
-      this.sites.push({
-        id: i,
-        title: "title" + i,
-        url: "https://google.com",
-        description: "あ\n".repeat(i),
-        favorites_count: 15,
-        favorited: false,
-        likes_count: 1,
-        liked: true,
-      });
-    }
+    await this.fetchSites();
 
     this.$emit("has-site", this.sites && this.sites.length > 0);
   },

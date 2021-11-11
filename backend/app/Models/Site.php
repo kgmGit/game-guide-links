@@ -5,21 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
+ * @property int $game_id
  * @property int $user_id
  * @property string $title
- * @property MorphMany $favorites
+ * @property string $url
+ * @property string $description
  */
-class Game extends Model
+class Site extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'title',
+        'url',
+        'description',
     ];
 
     public function user(): BelongsTo
@@ -27,13 +30,18 @@ class Game extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function sites(): HasMany
+    public function game(): BelongsTo
     {
-        return $this->hasMany(Site::class);
+        return $this->belongsTo(Game::class);
     }
 
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favorable');
+    }
+
+    public function likes(): MorphMany
+    {
+        return $this->morphMany(Like::class, 'likable');
     }
 }

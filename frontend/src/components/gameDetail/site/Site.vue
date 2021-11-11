@@ -2,17 +2,18 @@
   <div v-if="site">
     <b-card class="item">
       <template #header>
-        <b-link :to="$route.path + '/sites/' + site.id">
-          <div class="text-center">
-            {{ site.title }}
-          </div>
-        </b-link>
+        <div class="text-center">
+          {{ site.title }}
+        </div>
+        <div class="text-right text-muted small">by {{ site.owner_name }}</div>
       </template>
 
       <b-card-body>
-        <b-link :href="site.url">{{ site.url }}</b-link>
-        <div class="mt-2 description">
-          {{ site.description }}
+        <div class="content">
+          <b-link :href="site.url">{{ site.url }}</b-link>
+          <div class="mt-2">
+            {{ site.description }}
+          </div>
         </div>
 
         <b-row align-h="end" class="mt-2">
@@ -66,8 +67,8 @@ export default {
 .item {
   height: 17em;
 }
-.description {
-  height: 5em;
+.content {
+  height: 6em;
   overflow-y: auto;
   white-space: pre-wrap;
 }
