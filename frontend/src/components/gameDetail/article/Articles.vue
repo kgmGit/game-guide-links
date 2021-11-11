@@ -15,7 +15,7 @@
             >新規登録</b-button
           >
 
-          <hr class="my-4" />
+          <hr v-if="articles.length > 0" class="my-4" />
         </div>
         <div
           v-for="article in getPaginateItems"
@@ -30,6 +30,7 @@
           />
         </div>
         <b-pagination
+          v-if="articles.length > 0"
           :total-rows="articles.length"
           v-model="currentPage"
           :per-page="perPage"
@@ -48,6 +49,7 @@
 import { mapGetters } from "vuex";
 import ArticleComponent from "../article/Article.vue";
 import AuthModal from "@/components/AuthModal.vue";
+import { http } from "@/Services/Http";
 
 export default {
   components: { ArticleComponent, AuthModal },
@@ -74,6 +76,17 @@ export default {
   },
 
   methods: {
+    async fetchArticles() {
+      const title = this.$route.params.title;
+      await http
+        .get("/api/games/" + title + "/articles")
+        .then((response) => {
+          this.articles = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+    },
     async clickLike(id) {
       if (this.processing) return;
 
@@ -151,19 +164,7 @@ export default {
   },
 
   async created() {
-    this.articles = [];
-    for (let i = 0; i < 200; i++) {
-      this.articles.push({
-        id: i,
-        title: "title" + i,
-        outline: "あ\n".repeat(i),
-        content: "う".repeat(i),
-        favorites_count: 15,
-        favorited: false,
-        likes_count: 1,
-        liked: true,
-      });
-    }
+    await this.fetchArticles();
 
     this.$emit("has-article", this.articles && this.articles.length > 0);
   },

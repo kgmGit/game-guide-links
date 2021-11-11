@@ -7,10 +7,13 @@
             {{ article.title }}
           </div>
         </b-link>
+        <div class="text-right text-muted small">
+          by {{ article.owner_name }}
+        </div>
       </template>
 
       <b-card-body>
-        <div class="mt-2 outline">
+        <div class="content">
           {{ article.outline }}
         </div>
 
@@ -65,7 +68,7 @@ export default {
 .item {
   height: 17em;
 }
-.outline {
+.content {
   height: 6em;
   overflow-y: auto;
   white-space: pre-wrap;
