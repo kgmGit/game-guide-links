@@ -9,6 +9,7 @@ import ResetPassword from "@/views/ResetPassword.vue";
 import MyPage from "@/views/MyPage.vue";
 import MyPageProfile from "@/components/mypage/Profile.vue";
 import GameDetail from "@/views/GameDetail.vue";
+import ArticleDetail from "@/views/article/ArticleDetail.vue";
 
 import Error from "@/views/Error.vue";
 
@@ -79,6 +80,12 @@ const routes = [
     path: "/games/:title",
     name: "GameDetail",
     component: GameDetail,
+  },
+
+  {
+    path: "/games/:game_title/articles/:id",
+    name: "ArticleDetail",
+    component: ArticleDetail,
   },
 
   {

@@ -6,6 +6,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
 {
+    private bool $withContent = false;
+
+    /**
+     * Create a new resource instance.
+     *
+     * @param  mixed  $resource
+     * @param bool $withContent
+     * @return void
+     */
+    public function __construct($resource, bool $withContent = false)
+    {
+        $this->withContent = $withContent;
+        parent::__construct($resource);
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -18,6 +33,7 @@ class ArticleResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'outline' => $this->outline,
+            'content' => $this->when($this->withContent, $this->content),
             'favorites_count' => $this->favorites->count(),
             'favorited' => auth()->check()
                 ? !$this->favorites->where('user_id', auth()->id())->isEmpty()

@@ -24,7 +24,7 @@ class ArticleFactory extends Factory
         return [
             'title' => $this->faker->country,
             'outline' => $this->faker->realText(50),
-            'content' => '<h>' . $this->faker->country . '</h>\n<p>' . $this->faker->realText() . '</p>',
+            'content' => '<h1>' . $this->faker->country . '</h1><p>' . $this->faker->realText() . '</p>',
         ];
     }
 }

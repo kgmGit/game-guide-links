@@ -44,14 +44,16 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 記事取得
      *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @param Article $article
+     * @return ArticleResource
      */
-    public function show(Article $article)
+    public function show(Game $game, Article $article): ArticleResource
     {
-        //
+        $article->load(['user', 'favorites', 'likes']);
+        return new ArticleResource($article, true);
     }
 
     /**
