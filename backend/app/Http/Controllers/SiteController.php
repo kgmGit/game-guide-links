@@ -45,14 +45,16 @@ class SiteController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * サイト取得
      *
-     * @param  \App\Models\Site  $site
-     * @return \Illuminate\Http\Response
+     * @param Game $game
+     * @param Site $site
+     * @return SiteResource
      */
-    public function show(Site $site)
+    public function show(Game $game, Site $site): SiteResource
     {
-        //
+        $site->load(['user', 'favorites', 'likes']);
+        return new SiteResource($site);
     }
 
     /**

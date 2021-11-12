@@ -23,6 +23,8 @@ Route::get('/games', [GameController::class, 'index']);
 Route::get('/games/{game:title}', [GameController::class, 'show']);
 
 Route::get('/games/{game:title}/sites', [SiteController::class, 'index']);
+Route::get('/games/{game:title}/sites/{site:id}', [SiteController::class, 'show']);
+
 
 Route::get('/games/{game:title}/articles', [ArticleController::class, 'index']);
 Route::get('/games/{game:title}/articles/{article:id}', [ArticleController::class, 'show']);
