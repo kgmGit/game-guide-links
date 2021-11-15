@@ -1,43 +1,20 @@
 <template>
   <div v-if="sites">
-    <b-card>
-      <template #header>
-        <div class="text-center">攻略サイト</div>
-      </template>
-
-      <b-card-body>
-        <div v-if="isVerified">
-          <b-button
-            :to="$route.path + '/sites/add'"
-            size="lg"
-            block
-            variant="primary"
-            >新規登録</b-button
-          >
-
-          <hr v-if="sites.length > 0" class="my-4" />
-        </div>
-        <div
-          v-for="site in getPaginateItems"
-          :key="'site' + site.id"
-          class="mt-3"
-        >
-          <site
-            :site="site"
-            @click-like="clickLike"
-            @click-favorite="clickFavorite"
-            @click-report="clickReport"
-          />
-        </div>
-        <b-pagination
-          v-if="sites.length > 0"
-          :total-rows="sites.length"
-          v-model="currentPage"
-          :per-page="perPage"
-          class="mt-3"
-        />
-      </b-card-body>
-    </b-card>
+    <div v-for="site in getPaginateItems" :key="'site' + site.id" class="mt-3">
+      <site
+        :site="site"
+        @click-like="clickLike"
+        @click-favorite="clickFavorite"
+        @click-report="clickReport"
+      />
+    </div>
+    <b-pagination
+      v-if="sites.length > 0"
+      :total-rows="sites.length"
+      v-model="currentPage"
+      :per-page="perPage"
+      class="mt-3"
+    />
 
     <b-modal id="auth-site-modal" hide-header hide-footer>
       <auth-modal />
@@ -49,10 +26,15 @@
 import { mapGetters } from "vuex";
 import Site from "@/components/gameDetail/site/Site.vue";
 import AuthModal from "@/components/AuthModal.vue";
-import { http } from "@/Services/Http";
 
 export default {
   components: { Site, AuthModal },
+  props: {
+    propSites: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       processing: false,
@@ -76,17 +58,6 @@ export default {
   },
 
   methods: {
-    async fetchSites() {
-      const title = this.$route.params.title;
-      await http
-        .get("/api/games/" + title + "/sites")
-        .then((response) => {
-          this.sites = response.data.data;
-        })
-        .catch(() => {
-          this.$router.replace({ name: "Error" });
-        });
-    },
     async clickLike(id) {
       if (this.processing) return;
 
@@ -164,9 +135,7 @@ export default {
   },
 
   async created() {
-    await this.fetchSites();
-
-    this.$emit("has-site", this.sites && this.sites.length > 0);
+    this.sites = JSON.parse(JSON.stringify(this.propSites));
   },
 };
 </script>

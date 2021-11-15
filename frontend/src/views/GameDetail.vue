@@ -29,10 +29,53 @@
 
         <b-row class="mt-5">
           <b-col sm>
-            <sites @has-site="hasSite = $event" />
+            <b-card>
+              <template #header>
+                <div class="text-center">攻略サイト</div>
+              </template>
+
+              <b-card-body>
+                <div v-if="isVerified">
+                  <b-button
+                    :to="$route.path + '/sites/add'"
+                    size="lg"
+                    block
+                    variant="primary"
+                    >新規登録</b-button
+                  >
+
+                  <div v-if="hasSites">
+                    <hr class="my-4" />
+                    <sites :propSites="sites" />
+                  </div>
+                </div>
+              </b-card-body>
+            </b-card>
           </b-col>
+
           <b-col sm>
-            <articles @has-article="hasArticle = $event" />
+            <b-card>
+              <template #header>
+                <div class="text-center">攻略記事</div>
+              </template>
+
+              <b-card-body>
+                <div v-if="isVerified">
+                  <b-button
+                    :to="$route.path + '/articles/add'"
+                    size="lg"
+                    block
+                    variant="primary"
+                    >新規登録</b-button
+                  >
+
+                  <div v-if="hasArticles">
+                    <hr class="my-4" />
+                    <articles :propArticles="articles" />
+                  </div>
+                </div>
+              </b-card-body>
+            </b-card>
           </b-col>
         </b-row>
       </b-card-body>
@@ -61,8 +104,8 @@ export default {
     return {
       game: null,
       processing: false,
-      hasSite: false,
-      hasArticle: false,
+      sites: null,
+      articles: null,
     };
   },
   computed: {
@@ -70,10 +113,16 @@ export default {
       isVerified: "auth/isVerified",
       isAuth: "auth/isAuth",
     }),
+    hasSites: function () {
+      return this.sites !== null && this.sites.length > 0;
+    },
+    hasArticles: function () {
+      return this.articles !== null && this.articles.length > 0;
+    },
   },
   methods: {
     async deleteGame() {
-      if (this.hasSite || this.hasArticle) {
+      if (this.hasSites || this.hasArticle) {
         this.$bvModal.msgBoxOk(
           "攻略サイト、攻略情報が追加されているゲームは削除できません"
         );
@@ -124,6 +173,27 @@ export default {
     clickReport() {
       // todo: 通報小画面表示
     },
+
+    async fetchSites() {
+      await http
+        .get("/api/games/" + this.game.title + "/sites")
+        .then((response) => {
+          this.sites = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+    },
+    async fetchArticles() {
+      await http
+        .get("/api/games/" + this.game.title + "/articles")
+        .then((response) => {
+          this.articles = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+    },
   },
   async created() {
     const title = this.$route.params.title;
@@ -135,6 +205,9 @@ export default {
       .catch(() => {
         this.$router.replace({ name: "Error" });
       });
+
+    this.fetchSites();
+    this.fetchArticles();
   },
 };
 </script>

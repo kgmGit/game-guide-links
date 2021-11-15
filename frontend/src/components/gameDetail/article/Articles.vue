@@ -1,43 +1,24 @@
 <template>
   <div v-if="articles">
-    <b-card>
-      <template #header>
-        <div class="text-center">攻略サイト</div>
-      </template>
-
-      <b-card-body>
-        <div v-if="isVerified">
-          <b-button
-            :to="$route.path + '/articles/add'"
-            size="lg"
-            block
-            variant="primary"
-            >新規登録</b-button
-          >
-
-          <hr v-if="articles.length > 0" class="my-4" />
-        </div>
-        <div
-          v-for="article in getPaginateItems"
-          :key="'article' + article.id"
-          class="mt-3"
-        >
-          <article-component
-            :article="article"
-            @click-like="clickLike"
-            @click-favorite="clickFavorite"
-            @click-report="clickReport"
-          />
-        </div>
-        <b-pagination
-          v-if="articles.length > 0"
-          :total-rows="articles.length"
-          v-model="currentPage"
-          :per-page="perPage"
-          class="mt-3"
-        />
-      </b-card-body>
-    </b-card>
+    <div
+      v-for="article in getPaginateItems"
+      :key="'article' + article.id"
+      class="mt-3"
+    >
+      <article-component
+        :article="article"
+        @click-like="clickLike"
+        @click-favorite="clickFavorite"
+        @click-report="clickReport"
+      />
+    </div>
+    <b-pagination
+      v-if="articles.length > 0"
+      :total-rows="articles.length"
+      v-model="currentPage"
+      :per-page="perPage"
+      class="mt-3"
+    />
 
     <b-modal id="auth-article-modal" hide-header hide-footer>
       <auth-modal />
@@ -49,10 +30,15 @@
 import { mapGetters } from "vuex";
 import ArticleComponent from "../article/Article.vue";
 import AuthModal from "@/components/AuthModal.vue";
-import { http } from "@/Services/Http";
 
 export default {
   components: { ArticleComponent, AuthModal },
+  props: {
+    propArticles: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       processing: false,
@@ -76,17 +62,6 @@ export default {
   },
 
   methods: {
-    async fetchArticles() {
-      const title = this.$route.params.title;
-      await http
-        .get("/api/games/" + title + "/articles")
-        .then((response) => {
-          this.articles = response.data.data;
-        })
-        .catch(() => {
-          this.$router.replace({ name: "Error" });
-        });
-    },
     async clickLike(id) {
       if (this.processing) return;
 
@@ -164,9 +139,7 @@ export default {
   },
 
   async created() {
-    await this.fetchArticles();
-
-    this.$emit("has-article", this.articles && this.articles.length > 0);
+    this.articles = JSON.parse(JSON.stringify(this.propArticles));
   },
 };
 </script>
