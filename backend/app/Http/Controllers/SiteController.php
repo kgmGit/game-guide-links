@@ -19,7 +19,7 @@ class SiteController extends Controller
      */
     public function index(Game $game): AnonymousResourceCollection
     {
-        $game->load(['sites.user', 'sites.favorites', 'sites.likes']);
+        $game->load(['sites.user', 'sites.favorites', 'sites.likes', 'sites.game']);
         return SiteResource::collection($game->sites);
     }
 
@@ -53,7 +53,7 @@ class SiteController extends Controller
      */
     public function show(Game $game, Site $site): SiteResource
     {
-        $site->load(['user', 'favorites', 'likes']);
+        $site->load(['user', 'favorites', 'likes', 'game']);
         return new SiteResource($site);
     }
 

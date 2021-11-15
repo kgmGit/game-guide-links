@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SiteResource extends JsonResource
+class ArticleWithContentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,8 @@ class SiteResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'url' => $this->url,
-            'description' => $this->description,
+            'outline' => $this->outline,
+            'content' => $this->content,
             'favorites_count' => $this->favorites->count(),
             'favorited' => auth()->check()
                 ? !$this->favorites->where('user_id', auth()->id())->isEmpty()

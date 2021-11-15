@@ -2,7 +2,9 @@
   <div v-if="article">
     <b-card class="item">
       <template #header>
-        <b-link :to="$route.path + '/articles/' + article.id">
+        <b-link
+          :to="'/games/' + article.game_title + '/articles/' + article.id"
+        >
           <div class="text-center">
             {{ article.title }}
           </div>

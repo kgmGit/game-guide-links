@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleWithContentResource;
 use App\Models\Article;
 use App\Models\Game;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ArticleController extends Controller
      */
     public function index(Game $game): AnonymousResourceCollection
     {
-        $game->load(['articles.user', 'articles.favorites', 'articles.likes']);
+        $game->load(['articles.user', 'articles.favorites', 'articles.likes', 'articles.game']);
         return ArticleResource::collection($game->articles);
     }
 
@@ -50,10 +51,10 @@ class ArticleController extends Controller
      * @param Article $article
      * @return ArticleResource
      */
-    public function show(Game $game, Article $article): ArticleResource
+    public function show(Game $game, Article $article): ArticleWithContentResource
     {
-        $article->load(['user', 'favorites', 'likes']);
-        return new ArticleResource($article, true);
+        $article->load(['user', 'favorites', 'likes', 'game']);
+        return new ArticleWithContentResource($article);
     }
 
     /**

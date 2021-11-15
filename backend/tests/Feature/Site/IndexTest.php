@@ -46,7 +46,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -59,6 +59,7 @@ class IndexTest extends TestCase
                     'liked' => false,
                     'owner' => true,
                     'owner_name' => 'loginUser',
+                    'game_title' => 'aaa',
                 ],
                 [
                     'id' => 2,
@@ -71,6 +72,7 @@ class IndexTest extends TestCase
                     'liked' => false,
                     'owner' => false,
                     'owner_name' => 'otherUser',
+                    'game_title' => 'aaa',
                 ],
                 [
                     'id' => 3,
@@ -83,6 +85,7 @@ class IndexTest extends TestCase
                     'liked' => false,
                     'owner' => false,
                     'owner_name' => null,
+                    'game_title' => 'aaa',
                 ],
             ]
         ]);
@@ -108,7 +111,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -121,6 +124,7 @@ class IndexTest extends TestCase
                     'liked' => false,
                     'owner' => true,
                     'owner_name' => 'name',
+                    'game_title' => 'aaa'
                 ],
             ]
         ]);
@@ -146,7 +150,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -159,6 +163,7 @@ class IndexTest extends TestCase
                     'liked' => true,
                     'owner' => true,
                     'owner_name' => 'name',
+                    'game_title' => 'aaa',
                 ],
             ]
         ]);

@@ -27,7 +27,7 @@ class ShowTest extends TestCase
         $response = $this->json('GET', 'api/games/game_title/articles/1');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 'id' => 1,
                 'title' => 'title',
@@ -39,7 +39,8 @@ class ShowTest extends TestCase
                 'liked' => false,
                 'owner' => false,
                 'owner_name' => 'name',
-            ]
+                'game_title' => 'game_title',
+                ]
         ]);
     }
 
