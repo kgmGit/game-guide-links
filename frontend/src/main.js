@@ -46,6 +46,17 @@ extend("min", min);
 extend("max", max);
 extend("email", email);
 extend("confirmed", confirmed);
+extend("url", {
+  validate(value) {
+    if (value) {
+      const re = /https?:\/\/[\w/:%#$&?()~.=+-]+/;
+      return re.test(value);
+    }
+
+    return false;
+  },
+  message: "有効なURLではありません",
+});
 localize("ja", ja);
 Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);

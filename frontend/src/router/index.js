@@ -10,6 +10,8 @@ import MyPage from "@/views/MyPage.vue";
 import MyPageProfile from "@/components/mypage/Profile.vue";
 import GameDetail from "@/views/GameDetail.vue";
 import ArticleDetail from "@/views/article/ArticleDetail.vue";
+import ArticleEdit from "@/views/article/ArticleEdit.vue";
+import SiteEdit from "@/views/site/SiteEdit.vue";
 
 import Error from "@/views/Error.vue";
 
@@ -82,6 +84,17 @@ const routes = [
     component: GameDetail,
   },
 
+  {
+    path: "/games/:game_title/sites/add",
+    name: "SiteEdit",
+    component: SiteEdit,
+  },
+
+  {
+    path: "/games/:game_title/articles/add",
+    name: "ArticleEdit",
+    component: ArticleEdit,
+  },
   {
     path: "/games/:game_title/articles/:id",
     name: "ArticleDetail",

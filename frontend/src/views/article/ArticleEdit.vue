@@ -1,0 +1,192 @@
+<template>
+  <div>
+    <b-card>
+      <template #header>
+        <b-link :to="'/games/' + $route.params.game_title">
+          <h4 class="text-center">
+            {{ $route.params.game_title }}
+          </h4>
+        </b-link>
+      </template>
+
+      <b-card-body>
+        <ValidationObserver
+          ref="form"
+          v-slot="{ invalid: voInvalid, handleSubmit }"
+        >
+          <b-form @submit.prevent="handleSubmit(registerOrUpdate)">
+            <b-form-group label="タイトル" label-for="title">
+              <ValidationProvider
+                immediate
+                vid="title"
+                rules="required"
+                v-slot="{ errors, valid }"
+              >
+                <b-form-input
+                  id="title"
+                  :state="valid"
+                  maxlength="20"
+                  v-model="form.title"
+                ></b-form-input>
+                <b-form-invalid-feedback :state="valid">
+                  {{ errors[0] }}
+                </b-form-invalid-feedback>
+              </ValidationProvider>
+            </b-form-group>
+
+            <b-form-group label="概要" label-for="outline">
+              <ValidationProvider
+                immediate
+                vid="description"
+                rules="required|max:30"
+                v-slot="{ errors, valid }"
+              >
+                <b-form-textarea
+                  id="description"
+                  max-rows="3"
+                  rows="3"
+                  :state="valid"
+                  v-model="form.description"
+                ></b-form-textarea>
+                <b-form-invalid-feedback :state="valid">
+                  {{ errors[0] }}
+                </b-form-invalid-feedback>
+              </ValidationProvider>
+            </b-form-group>
+
+            <b-form-group label="攻略情報" label-for="content">
+              <ValidationProvider
+                immediate
+                vid="content"
+                rules="required"
+                v-slot="{ errors, valid }"
+              >
+                <vue-editor
+                  id="content"
+                  :state="valid"
+                  v-model="form.content"
+                  :editor-toolbar="customToolbar"
+                />
+                <b-form-invalid-feedback :state="valid">
+                  {{ errors[0] }}
+                </b-form-invalid-feedback>
+              </ValidationProvider>
+            </b-form-group>
+
+            <b-card header="プレビュー" class="mt-5">
+              <div v-html="form.content" class="ql-editor"></div>
+            </b-card>
+
+            <b-button
+              :disabled="voInvalid || processing"
+              size="lg"
+              block
+              type="submit"
+              variant="primary"
+              class="mt-5"
+              >{{ isEdit ? "更新" : "登録" }}</b-button
+            >
+          </b-form>
+        </ValidationObserver>
+      </b-card-body>
+    </b-card>
+  </div>
+</template>
+
+<script>
+import { VueEditor } from "vue2-editor";
+
+export default {
+  components: {
+    VueEditor,
+  },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      processing: false,
+      form: {
+        title: "",
+        outline: "",
+        content: "",
+      },
+      customToolbar: [
+        [
+          {
+            header: [false, 1, 2, 3, 4, 5, 6],
+          },
+        ],
+        ["bold", "italic", "underline", "strike"],
+        [
+          {
+            align: "",
+          },
+          {
+            align: "center",
+          },
+          {
+            align: "right",
+          },
+          {
+            align: "justify",
+          },
+        ],
+        ["blockquote"],
+        [
+          {
+            list: "ordered",
+          },
+          {
+            list: "bullet",
+          },
+          {
+            list: "check",
+          },
+        ],
+        [
+          {
+            indent: "-1",
+          },
+          {
+            indent: "+1",
+          },
+        ],
+        [
+          {
+            color: [],
+          },
+          {
+            background: [],
+          },
+        ],
+        ["clean"],
+      ],
+    };
+  },
+  methods: {
+    async registerOrUpdate() {
+      try {
+        this.processing = true;
+
+        if (this.isEdit) {
+          await this.update();
+        } else {
+          await this.register();
+        }
+      } finally {
+        this.processing = false;
+      }
+    },
+    async register() {
+      console.log("登録");
+    },
+    async update() {
+      console.log("更新");
+    },
+  },
+};
+</script>

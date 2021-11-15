@@ -23,7 +23,7 @@
             {{ article.outline }}
           </b-card>
           <b-card class="mt-3">
-            <div v-html="article.content"></div>
+            <div v-html="article.content" class="ql-editor"></div>
           </b-card>
         </b-card-body>
       </b-card>
