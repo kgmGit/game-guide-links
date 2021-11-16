@@ -50,11 +50,10 @@
                     variant="primary"
                     >新規登録</b-button
                   >
-
-                  <div v-if="hasSites">
-                    <hr class="my-4" />
-                    <sites :propSites="sites" />
-                  </div>
+                  <hr v-if="hasSites" class="my-4" />
+                </div>
+                <div v-if="hasSites">
+                  <sites :propSites="sites" />
                 </div>
               </b-card-body>
             </b-card>
@@ -75,11 +74,10 @@
                     variant="primary"
                     >新規登録</b-button
                   >
-
-                  <div v-if="hasArticles">
-                    <hr class="my-4" />
-                    <articles :propArticles="articles" />
-                  </div>
+                  <hr v-if="hasArticles" class="my-4" />
+                </div>
+                <div v-if="hasArticles">
+                  <articles :propArticles="articles" />
                 </div>
               </b-card-body>
             </b-card>
