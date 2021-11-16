@@ -19,6 +19,14 @@
     <b-modal id="auth-site-modal" hide-header hide-footer>
       <auth-modal />
     </b-modal>
+
+    <b-modal id="report-site-modal" size="lg" hide-header hide-footer>
+      <report-modal
+        :gameTitle="targetSite && targetSite.game_title"
+        :site="targetSite"
+        @reported="$bvModal.hide('report-site-modal')"
+      />
+    </b-modal>
   </div>
 </template>
 
@@ -26,9 +34,10 @@
 import { mapGetters } from "vuex";
 import Site from "@/components/gameDetail/site/Site.vue";
 import AuthModal from "@/components/AuthModal.vue";
+import ReportModal from "@/components/ReportModal.vue";
 
 export default {
-  components: { Site, AuthModal },
+  components: { Site, AuthModal, ReportModal },
   props: {
     propSites: {
       type: Array,
@@ -39,6 +48,7 @@ export default {
     return {
       processing: false,
       sites: [],
+      targetSite: null,
 
       perPage: 10,
       currentPage: 1,
@@ -129,8 +139,19 @@ export default {
     },
 
     clickReport(id) {
-      // todo: サイト通報小画面表示
-      console.log(id + "report");
+      if (this.processing) return;
+
+      if (!this.isVerified) {
+        this.$bvModal.show("auth-site-modal");
+        return;
+      }
+
+      this.targetSite = this.getTargetSite(id);
+
+      this.$bvModal.show("report-site-modal");
+    },
+    getTargetSite(id) {
+      return this.sites.find((site) => site.id === id);
     },
   },
 

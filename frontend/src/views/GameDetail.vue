@@ -27,6 +27,13 @@
           <auth-modal />
         </b-modal>
 
+        <b-modal id="report-modal" size="lg" hide-header hide-footer>
+          <report-modal
+            :gameTitle="game.title"
+            @reported="$bvModal.hide('report-modal')"
+          />
+        </b-modal>
+
         <b-row class="mt-5">
           <b-col sm>
             <b-card>
@@ -91,6 +98,7 @@ import Report from "@/components/Report.vue";
 import { http } from "@/Services/Http";
 import Sites from "@/components/gameDetail/site/Sites.vue";
 import Articles from "@/components/gameDetail/article/Articles.vue";
+import ReportModal from "@/components/ReportModal.vue";
 
 export default {
   components: {
@@ -99,6 +107,7 @@ export default {
     Report,
     Sites,
     Articles,
+    ReportModal,
   },
   data() {
     return {
@@ -171,7 +180,14 @@ export default {
     },
 
     clickReport() {
-      // todo: 通報小画面表示
+      if (this.processing) return;
+
+      if (!this.isVerified) {
+        this.$bvModal.show("auth-game-modal");
+        return;
+      }
+
+      this.$bvModal.show("report-modal");
     },
 
     async fetchSites() {

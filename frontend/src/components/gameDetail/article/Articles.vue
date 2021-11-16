@@ -23,6 +23,14 @@
     <b-modal id="auth-article-modal" hide-header hide-footer>
       <auth-modal />
     </b-modal>
+
+    <b-modal id="report-article-modal" size="lg" hide-header hide-footer>
+      <report-modal
+        :gameTitle="targetArticle && targetArticle.game_title"
+        :article="targetArticle"
+        @reported="$bvModal.hide('report-article-modal')"
+      />
+    </b-modal>
   </div>
 </template>
 
@@ -30,9 +38,10 @@
 import { mapGetters } from "vuex";
 import ArticleComponent from "../article/Article.vue";
 import AuthModal from "@/components/AuthModal.vue";
+import ReportModal from "@/components/ReportModal.vue";
 
 export default {
-  components: { ArticleComponent, AuthModal },
+  components: { ArticleComponent, AuthModal, ReportModal },
   props: {
     propArticles: {
       type: Array,
@@ -43,6 +52,7 @@ export default {
     return {
       processing: false,
       articles: [],
+      targetArticle: null,
 
       perPage: 10,
       currentPage: 1,
@@ -133,8 +143,19 @@ export default {
     },
 
     clickReport(id) {
-      // todo: サイト通報小画面表示
-      console.log(id + "report");
+      if (this.processing) return;
+
+      if (!this.isVerified) {
+        this.$bvModal.show("auth-article-modal");
+        return;
+      }
+
+      this.targetArticle = this.getTargetArticle(id);
+
+      this.$bvModal.show("report-article-modal");
+    },
+    getTargetArticle(id) {
+      return this.articles.find((article) => article.id === id);
     },
   },
 
