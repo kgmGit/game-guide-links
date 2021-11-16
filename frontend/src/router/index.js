@@ -12,6 +12,10 @@ import GameDetail from "@/views/GameDetail.vue";
 import ArticleDetail from "@/views/article/ArticleDetail.vue";
 import ArticleEdit from "@/views/article/ArticleEdit.vue";
 import SiteEdit from "@/views/site/SiteEdit.vue";
+import FavoriteSites from "@/components/mypage/FavoriteSites.vue";
+import PostSites from "@/components/mypage/PostSites.vue";
+import FavoriteArticles from "@/components/mypage/FavoriteArticles.vue";
+import PostArticles from "@/components/mypage/PostArticles.vue";
 
 import Error from "@/views/Error.vue";
 
@@ -64,6 +68,22 @@ const routes = [
     name: "MyPage",
     component: MyPage,
     children: [
+      {
+        path: "favorites/sites",
+        component: FavoriteSites,
+      },
+      {
+        path: "favorites/articles",
+        component: FavoriteArticles,
+      },
+      {
+        path: "posts/sites",
+        component: PostSites,
+      },
+      {
+        path: "posts/articles",
+        component: PostArticles,
+      },
       {
         path: "profile",
         component: MyPageProfile,

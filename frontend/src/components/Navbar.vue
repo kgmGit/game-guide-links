@@ -15,7 +15,9 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item v-show="isAuth" to="/mypage">マイページ</b-nav-item>
+          <b-nav-item v-show="isAuth" to="/mypage/favorites/sites"
+            >マイページ</b-nav-item
+          >
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
