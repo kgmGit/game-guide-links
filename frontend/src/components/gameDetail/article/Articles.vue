@@ -20,15 +20,15 @@
       class="mt-3"
     />
 
-    <b-modal id="auth-article-modal" hide-header hide-footer>
+    <b-modal ref="auth-modal" hide-header hide-footer>
       <auth-modal />
     </b-modal>
 
-    <b-modal id="report-article-modal" size="lg" hide-header hide-footer>
+    <b-modal ref="report-modal" size="lg" hide-header hide-footer>
       <report-modal
         :gameTitle="targetArticle && targetArticle.game_title"
         :article="targetArticle"
-        @reported="$bvModal.hide('report-article-modal')"
+        @reported="$refs['report-modal'].hide('report-modal')"
       />
     </b-modal>
   </div>
@@ -76,7 +76,7 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-article-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
@@ -111,7 +111,7 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-article-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
@@ -146,13 +146,13 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-article-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
       this.targetArticle = this.getTargetArticle(id);
 
-      this.$bvModal.show("report-article-modal");
+      this.$refs["report-modal"].show();
     },
     getTargetArticle(id) {
       return this.articles.find((article) => article.id === id);

@@ -16,15 +16,15 @@
       class="mt-3"
     />
 
-    <b-modal id="auth-site-modal" hide-header hide-footer>
+    <b-modal ref="auth-modal" hide-header hide-footer>
       <auth-modal />
     </b-modal>
 
-    <b-modal id="report-site-modal" size="lg" hide-header hide-footer>
+    <b-modal ref="report-modal" size="lg" hide-header hide-footer>
       <report-modal
         :gameTitle="targetSite && targetSite.game_title"
         :site="targetSite"
-        @reported="$bvModal.hide('report-site-modal')"
+        @reported="$refs['report-modal'].hide()"
       />
     </b-modal>
   </div>
@@ -72,7 +72,7 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-site-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
@@ -107,7 +107,7 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-site-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
@@ -142,13 +142,13 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-site-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
       this.targetSite = this.getTargetSite(id);
 
-      this.$bvModal.show("report-site-modal");
+      this.$refs["report-modal"].show();
     },
     getTargetSite(id) {
       return this.sites.find((site) => site.id === id);

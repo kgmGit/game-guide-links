@@ -23,14 +23,14 @@
           <report @click="clickReport" class="ml-3" />
         </b-row>
 
-        <b-modal id="auth-game-modal" hide-header hide-footer>
+        <b-modal ref="auth-modal" hide-header hide-footer>
           <auth-modal />
         </b-modal>
 
-        <b-modal id="report-modal" size="lg" hide-header hide-footer>
+        <b-modal ref="report-modal" size="lg" hide-header hide-footer>
           <report-modal
             :gameTitle="game.title"
-            @reported="$bvModal.hide('report-modal')"
+            @reported="$refs['report-modal'].hide()"
           />
         </b-modal>
 
@@ -148,7 +148,7 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-game-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
@@ -181,11 +181,11 @@ export default {
       if (this.processing) return;
 
       if (!this.isVerified) {
-        this.$bvModal.show("auth-game-modal");
+        this.$refs["auth-modal"].show();
         return;
       }
 
-      this.$bvModal.show("report-modal");
+      this.$refs["report-modal"].show();
     },
 
     async fetchSites() {
