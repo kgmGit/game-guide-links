@@ -82,18 +82,35 @@
               class="mt-5"
               >{{ isEdit ? "更新" : "登録" }}</b-button
             >
+
+            <b-button
+              v-if="isEdit"
+              :disabled="processing"
+              v-b-modal.confirm
+              size="lg"
+              block
+              type="button"
+              variant="danger"
+              class="mt-5"
+              >削除</b-button
+            >
           </b-form>
         </ValidationObserver>
+
+        <b-modal title="確認" @ok="deleteSite" id="confirm"
+          >攻略サイトを削除しますか？</b-modal
+        >
       </b-card-body>
     </b-card>
   </div>
 </template>
 
 <script>
+import { http } from "@/Services/Http";
+
 export default {
   props: {
-    isEdit: {
-      type: Boolean,
+    id: {
       default: false,
     },
   },
@@ -106,6 +123,11 @@ export default {
         description: "",
       },
     };
+  },
+  computed: {
+    isEdit: function () {
+      return !!this.id;
+    },
   },
   methods: {
     async registerOrUpdate() {
@@ -129,6 +151,30 @@ export default {
     async update() {
       console.log("更新");
     },
+    async deleteSite() {
+      console.log("削除");
+    },
+    async fetchSite(gameTitle, siteId) {
+      try {
+        this.processing = true;
+
+        await http
+          .get("/api/games/" + gameTitle + "/sites/" + siteId)
+          .then((response) => {
+            this.form = response.data.data;
+          })
+          .catch(() => {
+            this.$router.replace({ name: "Error" });
+          });
+      } finally {
+        this.processing = false;
+      }
+    },
+  },
+  async created() {
+    if (this.isEdit) {
+      await this.fetchSite(this.$route.params.game_title, this.id);
+    }
   },
 };
 </script>

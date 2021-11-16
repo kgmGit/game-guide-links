@@ -86,19 +86,31 @@ const routes = [
 
   {
     path: "/games/:game_title/sites/add",
+    name: "SiteAdd",
+    component: SiteEdit,
+  },
+  {
+    path: "/games/:game_title/sites/:id/edit",
     name: "SiteEdit",
     component: SiteEdit,
+    props: true,
   },
 
   {
     path: "/games/:game_title/articles/add",
-    name: "ArticleEdit",
+    name: "ArticleAdd",
     component: ArticleEdit,
   },
   {
     path: "/games/:game_title/articles/:id",
     name: "ArticleDetail",
     component: ArticleDetail,
+  },
+  {
+    path: "/games/:game_title/articles/:id/edit",
+    name: "ArticleEdit",
+    component: ArticleEdit,
+    props: true,
   },
 
   {

@@ -3,7 +3,9 @@
     <b-card class="item">
       <template #header>
         <b-link
-          :to="'/games/' + article.game_title + '/articles/' + article.id"
+          :to="`/games/${article.game_title}/articles/${article.id}${
+            article.owner ? '/edit' : ''
+          }`"
         >
           <div class="text-center">
             {{ article.title }}

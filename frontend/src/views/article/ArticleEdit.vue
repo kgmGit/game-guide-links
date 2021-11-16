@@ -37,16 +37,16 @@
             <b-form-group label="概要" label-for="outline">
               <ValidationProvider
                 immediate
-                vid="description"
+                vid="outline"
                 rules="required|max:30"
                 v-slot="{ errors, valid }"
               >
                 <b-form-textarea
-                  id="description"
+                  id="outline"
                   max-rows="3"
                   rows="3"
                   :state="valid"
-                  v-model="form.description"
+                  v-model="form.outline"
                 ></b-form-textarea>
                 <b-form-invalid-feedback :state="valid">
                   {{ errors[0] }}
@@ -86,8 +86,24 @@
               class="mt-5"
               >{{ isEdit ? "更新" : "登録" }}</b-button
             >
+
+            <b-button
+              v-if="isEdit"
+              :disabled="processing"
+              v-b-modal.confirm
+              size="lg"
+              block
+              type="button"
+              variant="danger"
+              class="mt-5"
+              >削除</b-button
+            >
           </b-form>
         </ValidationObserver>
+
+        <b-modal title="確認" @ok="deleteArticle" id="confirm"
+          >攻略記事を削除しますか？</b-modal
+        >
       </b-card-body>
     </b-card>
   </div>
@@ -95,15 +111,15 @@
 
 <script>
 import { VueEditor } from "vue2-editor";
+import { http } from "@/Services/Http";
 
 export default {
   components: {
     VueEditor,
   },
   props: {
-    isEdit: {
-      type: Boolean,
-      default: false,
+    id: {
+      default: null,
     },
   },
   data() {
@@ -167,6 +183,11 @@ export default {
       ],
     };
   },
+  computed: {
+    isEdit: function () {
+      return !!this.id;
+    },
+  },
   methods: {
     async registerOrUpdate() {
       try {
@@ -187,6 +208,30 @@ export default {
     async update() {
       console.log("更新");
     },
+    async deleteArticle() {
+      console.log("削除");
+    },
+    async fetchArticle(gameTitle, articleId) {
+      try {
+        this.processing = true;
+
+        await http
+          .get("/api/games/" + gameTitle + "/articles/" + articleId)
+          .then((response) => {
+            this.form = response.data.data;
+          })
+          .catch(() => {
+            this.$router.replace({ name: "Error" });
+          });
+      } finally {
+        this.processing = false;
+      }
+    },
+  },
+  async created() {
+    if (this.isEdit) {
+      await this.fetchArticle(this.$route.params.game_title, this.id);
+    }
   },
 };
 </script>

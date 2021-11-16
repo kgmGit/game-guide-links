@@ -2,7 +2,14 @@
   <div v-if="site">
     <b-card class="item">
       <template #header>
-        <div class="text-center">
+        <div v-if="site.owner">
+          <b-link :to="`/games/${site.game_title}/sites/${site.id}/edit`">
+            <div class="text-center">
+              {{ site.title }}
+            </div>
+          </b-link>
+        </div>
+        <div v-else class="text-center">
           {{ site.title }}
         </div>
         <div class="text-right text-muted small">by {{ site.owner_name }}</div>
