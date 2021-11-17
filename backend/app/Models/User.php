@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property string $name
+ * @property bool $admin
  */
 class User extends Authenticatable implements MustVerifyEmail
 {

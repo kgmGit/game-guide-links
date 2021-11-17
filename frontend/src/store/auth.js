@@ -17,8 +17,7 @@ const getters = {
     return state.user;
   },
   isAdmin(state) {
-    // return state.user && state.user.admin;
-    return state.user && true;
+    return state.user && state.user.admin;
   },
 };
 

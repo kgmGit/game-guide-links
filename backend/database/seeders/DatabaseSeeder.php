@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // ユーザ登録
+        User::factory()->admin()->create([
+            'email' => 'admin@admin.com',
+        ]);
         User::factory()->create([
             'email' => 'test@test.com',
         ]);
@@ -33,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         // ゲーム登録
         $timestampsArray = ['created_at' => now(), 'updated_at' => now()];
-        $users_verified = User::whereNotNull('email_verified_at')->get();
+        $users_verified = User::whereNotNull('email_verified_at')->where('admin', false)->get();
         $games = collect();
         foreach ($users_verified as $user) {
             $games = $games->merge(
