@@ -5,7 +5,7 @@
         <h4 class="text-center">
           {{ game.title }}
           <b-button
-            v-if="game.owner"
+            v-if="game.owner || isAdmin"
             variant="outline-dark"
             @click="deleteGame"
           >
@@ -119,6 +119,7 @@ export default {
     ...mapGetters({
       isVerified: "auth/isVerified",
       isAuth: "auth/isAuth",
+      isAdmin: "auth/isAdmin",
     }),
     hasSites: function () {
       return this.sites !== null && this.sites.length > 0;
