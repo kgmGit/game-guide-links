@@ -41,4 +41,9 @@ class Game extends Model
     {
         return $this->morphMany(Favorite::class, 'favorable');
     }
+
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

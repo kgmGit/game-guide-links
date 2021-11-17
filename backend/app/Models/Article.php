@@ -44,4 +44,9 @@ class Article extends Model
     {
         return $this->morphMany(Like::class, 'likable');
     }
+
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
 }

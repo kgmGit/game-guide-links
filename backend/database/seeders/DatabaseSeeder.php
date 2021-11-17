@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Favorite;
 use App\Models\Game;
 use App\Models\Like;
+use App\Models\Report;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -54,6 +55,7 @@ class DatabaseSeeder extends Seeder
         $favorites = collect();
         $sites = collect();
         $articles = collect();
+        $reports = collect();
         foreach ($games as $game) {
             // ゲームお気に入り
             $favoriteUsers = $users_verified->random(rand(0, $users_verified->count() - 1));
@@ -62,6 +64,13 @@ class DatabaseSeeder extends Seeder
                 return $favorite->user()->associate($user);
             });
             $favorites = $favorites->merge($newFavorites);
+
+            // ゲーム通報
+            $reportUsers = $users_verified->random(rand(0, $users_verified->count() - 1));
+            $newReports = $reportUsers->map(function (User $user) use ($game): Report {
+                return Report::factory()->for($user)->for($game, 'reportable')->make();
+            });
+            $reports = $reports->merge($newReports);
 
             // サイト
             $newSites = $users_verified->map(function (User $user) use ($game): Collection {
@@ -105,6 +114,13 @@ class DatabaseSeeder extends Seeder
                 return $like->user()->associate($user);
             });
             $likes = $likes->merge($newLikes);
+
+            // サイト通報
+            $reportUsers = $users_verified->random(rand(0, $users_verified->count() - 1));
+            $newReports = $reportUsers->map(function (User $user) use ($site): Report {
+                return Report::factory()->for($user)->for($site, 'reportable')->make();
+            });
+            $reports = $reports->merge($newReports);
         }
 
         $articles = Article::all();
@@ -124,6 +140,13 @@ class DatabaseSeeder extends Seeder
                 return $like->user()->associate($user);
             });
             $likes = $likes->merge($newLikes);
+
+            // 記事通報
+            $reportUsers = $users_verified->random(rand(0, $users_verified->count() - 1));
+            $newReports = $reportUsers->map(function (User $user) use ($article): Report {
+                return Report::factory()->for($user)->for($article, 'reportable')->make();
+            });
+            $reports = $reports->merge($newReports);
         }
 
         $favoritesArray = $favorites->map(function (Favorite $favorite) use ($timestampsArray) {
@@ -138,6 +161,13 @@ class DatabaseSeeder extends Seeder
         })->toArray();
         for ($i = 0; $i < count($likesArray); $i += 100) {
             Like::insert(array_slice($likesArray, $i, 100));
+        }
+
+        $reportsArray = $reports->map(function (Report $report) use ($timestampsArray) {
+            return $report->attributesToArray() + $timestampsArray;
+        })->toArray();
+        for ($i = 0; $i < count($reportsArray); $i += 100) {
+            Report::insert(array_slice($reportsArray, $i, 100));
         }
     }
 }
