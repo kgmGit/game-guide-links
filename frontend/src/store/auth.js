@@ -3,6 +3,7 @@ import { http } from "@/Services/Http";
 const state = {
   isAuth: false,
   user: null,
+  isAdmin: false,
 };
 
 const getters = {
@@ -14,6 +15,10 @@ const getters = {
   },
   user(state) {
     return state.user;
+  },
+  isAdmin(state) {
+    // return state.user && state.user.admin;
+    return state.user && true;
   },
 };
 

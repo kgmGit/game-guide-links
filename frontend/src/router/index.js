@@ -16,6 +16,7 @@ import FavoriteSites from "@/components/mypage/FavoriteSites.vue";
 import PostSites from "@/components/mypage/PostSites.vue";
 import FavoriteArticles from "@/components/mypage/FavoriteArticles.vue";
 import PostArticles from "@/components/mypage/PostArticles.vue";
+import Reports from "@/views/Reports.vue";
 
 import Error from "@/views/Error.vue";
 
@@ -131,6 +132,19 @@ const routes = [
     name: "ArticleEdit",
     component: ArticleEdit,
     props: true,
+  },
+
+  {
+    path: "/reports",
+    name: "Report",
+    component: Reports,
+    beforeEnter(to, from, next) {
+      if (store.getters["auth/isAdmin"]) {
+        next();
+      } else {
+        next(false);
+      }
+    },
   },
 
   {

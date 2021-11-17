@@ -15,6 +15,7 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
+          <b-nav-item v-show="isAdmin" to="/reports">通報内容確認</b-nav-item>
           <b-nav-item v-show="isAuth" to="/mypage/favorites/sites"
             >マイページ</b-nav-item
           >
@@ -32,6 +33,7 @@ export default {
     ...mapGetters({
       isAuth: "auth/isAuth",
       isVerified: "auth/isVerified",
+      isAdmin: "auth/isAdmin",
       user: "auth/user",
     }),
   },
