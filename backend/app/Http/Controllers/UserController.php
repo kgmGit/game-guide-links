@@ -29,6 +29,8 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user->games()->update(['user_id' => null]);
+            $user->sites()->update(['user_id' => null]);
+            $user->articles()->update(['user_id' => null]);
             $user->delete();
 
             DB::commit();
