@@ -7,7 +7,7 @@
           <b-button
             v-if="game.owner || isAdmin"
             variant="outline-dark"
-            @click="deleteGame"
+            @click="clickDelete"
           >
             <font-awesome-icon :icon="['fas', 'trash-alt']" />
           </b-button>
@@ -129,7 +129,9 @@ export default {
     },
   },
   methods: {
-    async deleteGame() {
+    async clickDelete() {
+      if (this.processing) return;
+
       if (this.hasSites || this.hasArticle) {
         this.$bvModal.msgBoxOk(
           "攻略サイト、攻略情報が追加されているゲームは削除できません"
@@ -137,14 +139,34 @@ export default {
         return;
       }
 
+      if (
+        !(await this.$bvModal.msgBoxConfirm(
+          "ゲームを削除します。\nよろしいですか？"
+        ))
+      ) {
+        return;
+      }
+
       try {
         this.processing = true;
-        // todo: ゲーム削除API呼び出し
-        console.log("delete game");
+
+        this.deleteGame();
       } finally {
         this.processing = false;
       }
     },
+    async deleteGame() {
+      await http
+        .delete("/api/games/" + this.game.title)
+        .then(() => {
+          this.$store.dispatch("message/setContent", "ゲームを削除しました");
+          this.$router.replace({ name: "Home" });
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+    },
+
     async clickFavorite() {
       if (this.processing) return;
 
@@ -211,18 +233,24 @@ export default {
     },
   },
   async created() {
-    const title = this.$route.params.title;
-    await http
-      .get("/api/games/" + title)
-      .then((response) => {
-        this.game = response.data.data;
-      })
-      .catch(() => {
-        this.$router.replace({ name: "Error" });
-      });
+    try {
+      this.processing = true;
 
-    this.fetchSites();
-    this.fetchArticles();
+      const title = this.$route.params.title;
+      await http
+        .get("/api/games/" + title)
+        .then((response) => {
+          this.game = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
+
+      await this.fetchSites();
+      await this.fetchArticles();
+    } finally {
+      this.processing = false;
+    }
   },
 };
 </script>

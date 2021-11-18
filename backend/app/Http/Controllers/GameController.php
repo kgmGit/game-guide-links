@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Game\DestroyRequest;
 use App\Http\Requests\Game\StoreRequest;
 use App\Http\Resources\GameResource;
 use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class GameController extends Controller
 {
@@ -29,16 +31,6 @@ class GameController extends Controller
         $games = Game::with(['favorites'])->where('title', 'LIKE', "%$title%")->limit(5)->get();
 
         return GameResource::collection($games);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -68,37 +60,32 @@ class GameController extends Controller
         return new GameResource($game);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * ゲーム削除
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param DestroyRequest $request
+     * @param Game $game
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function destroy(DestroyRequest $request, Game $game): JsonResponse
     {
-        //
-    }
+        if ($game->sites()->exists() || $game->articles()->exists()) {
+            abort(422, '攻略サイトまたは攻略記事が紐付いているゲームは削除できません');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        DB::beginTransaction();
+        try {
+            $game->favorites()->delete();
+            $game->reports()->delete();
+            $game->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            abort(500, 'ゲーム削除処理中にエラーが発生しました');
+        }
+
+        return response()->json(null, 204);
     }
 }
