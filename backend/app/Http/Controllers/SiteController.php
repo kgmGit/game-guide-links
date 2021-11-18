@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Site\StoreRequest;
 use App\Http\Resources\SiteResource;
 use App\Models\Game;
 use App\Models\Site;
@@ -34,14 +35,21 @@ class SiteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * サイト追加
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @param Game $game
+     * @return SiteResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, Game $game): SiteResource
     {
-        //
+        $validated = $request->validated();
+
+        $site = auth()->user()->sites()->make($validated);
+        $site->game()->associate($game);
+        $site->save();
+
+        return new SiteResource($site);
     }
 
     /**

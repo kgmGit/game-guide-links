@@ -49,7 +49,7 @@ extend("confirmed", confirmed);
 extend("url", {
   validate(value) {
     if (value) {
-      const re = /https?:\/\/[\w/:%#$&?()~.=+-]+/;
+      const re = /^https?:\/\/[^\s]+$/;
       return re.test(value);
     }
 

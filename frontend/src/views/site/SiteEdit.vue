@@ -57,7 +57,7 @@
               <ValidationProvider
                 immediate
                 vid="description"
-                rules="required|max:30"
+                rules="required|max:200"
                 v-slot="{ errors, valid }"
               >
                 <b-form-textarea
@@ -117,6 +117,7 @@ export default {
   data() {
     return {
       processing: false,
+      gameTitle: "",
       form: {
         title: "",
         url: "",
@@ -146,7 +147,18 @@ export default {
       }
     },
     async register() {
-      console.log("登録");
+      await http
+        .post(`/api/games/${this.gameTitle}/sites/`, this.form)
+        .then(() => {
+          this.$store.dispatch(
+            "message/setContent",
+            "攻略サイトを登録しました"
+          );
+          this.$router.push("/games/" + this.gameTitle);
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async update() {
       console.log("更新");
@@ -154,26 +166,27 @@ export default {
     async deleteSite() {
       console.log("削除");
     },
-    async fetchSite(gameTitle, siteId) {
-      try {
-        this.processing = true;
-
-        await http
-          .get("/api/games/" + gameTitle + "/sites/" + siteId)
-          .then((response) => {
-            this.form = response.data.data;
-          })
-          .catch(() => {
-            this.$router.replace({ name: "Error" });
-          });
-      } finally {
-        this.processing = false;
-      }
+    async fetchSite() {
+      await http
+        .get(`/api/games/${this.gameTitle}/sites/${this.id}`)
+        .then((response) => {
+          this.form = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
   },
   async created() {
-    if (this.isEdit) {
-      await this.fetchSite(this.$route.params.game_title, this.id);
+    try {
+      this.processing = true;
+
+      this.gameTitle = this.$route.params.game_title;
+      if (this.isEdit) {
+        await this.fetchSite();
+      }
+    } finally {
+      this.processing = false;
     }
   },
 };

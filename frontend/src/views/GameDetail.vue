@@ -35,7 +35,7 @@
         </b-modal>
 
         <b-row class="mt-5">
-          <b-col sm>
+          <b-col sm="6">
             <b-card>
               <template #header>
                 <div class="text-center">攻略サイト</div>
@@ -59,7 +59,7 @@
             </b-card>
           </b-col>
 
-          <b-col sm>
+          <b-col sm="6">
             <b-card>
               <template #header>
                 <div class="text-center">攻略記事</div>
