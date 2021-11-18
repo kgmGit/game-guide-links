@@ -4,7 +4,7 @@
       <template #header>
         <b-link
           :to="`/games/${article.game_title}/articles/${article.id}${
-            article.owner ? '/edit' : ''
+            article.owner || isAdmin ? '/edit' : ''
           }`"
         >
           <div class="text-center">
@@ -44,6 +44,7 @@
 import Favorite from "@/components/Favorite.vue";
 import Like from "@/components/Like.vue";
 import Report from "@/components/Report.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: { Favorite, Like, Report },
@@ -53,7 +54,11 @@ export default {
       required: true,
     },
   },
-
+  computed: {
+    ...mapGetters({
+      isAdmin: "auth/isAdmin",
+    }),
+  },
   methods: {
     clickLike() {
       this.$emit("click-like", this.article.id);

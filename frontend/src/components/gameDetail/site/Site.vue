@@ -2,7 +2,7 @@
   <div v-if="site">
     <b-card class="item">
       <template #header>
-        <div v-if="site.owner">
+        <div v-if="site.owner || isAdmin">
           <b-link :to="`/games/${site.game_title}/sites/${site.id}/edit`">
             <div class="text-center">
               {{ site.title }}
@@ -46,6 +46,7 @@
 import Favorite from "@/components/Favorite.vue";
 import Like from "@/components/Like.vue";
 import Report from "@/components/Report.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: { Favorite, Like, Report },
@@ -55,7 +56,11 @@ export default {
       required: true,
     },
   },
-
+  computed: {
+    ...mapGetters({
+      isAdmin: "auth/isAdmin",
+    }),
+  },
   methods: {
     clickLike() {
       this.$emit("click-like", this.site.id);
