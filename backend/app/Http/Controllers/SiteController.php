@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Site\StoreRequest;
+use App\Http\Requests\Site\UpdateRequest;
 use App\Http\Resources\SiteResource;
 use App\Models\Game;
 use App\Models\Site;
@@ -22,16 +23,6 @@ class SiteController extends Controller
     {
         $game->load(['sites.user', 'sites.favorites', 'sites.likes', 'sites.game']);
         return SiteResource::collection($game->sites);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -66,26 +57,20 @@ class SiteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * サイト更新
      *
-     * @param  \App\Models\Site  $site
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param Game $game
+     * @param Site $site
+     * @return SiteResource
      */
-    public function edit(Site $site)
+    public function update(UpdateRequest $request, Game $game, Site $site): SiteResource
     {
-        //
-    }
+        $validated = $request->validated();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Site  $site
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Site $site)
-    {
-        //
+        $site->fill($validated)->save();
+
+        return new SiteResource($site);
     }
 
     /**

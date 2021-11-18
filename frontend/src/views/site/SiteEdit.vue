@@ -161,7 +161,18 @@ export default {
         });
     },
     async update() {
-      console.log("更新");
+      await http
+        .patch(`/api/games/${this.gameTitle}/sites/${this.id}`, this.form)
+        .then(() => {
+          this.$store.dispatch(
+            "message/setContent",
+            "攻略サイトを更新しました"
+          );
+          this.$router.push("/games/" + this.gameTitle);
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async deleteSite() {
       console.log("削除");
