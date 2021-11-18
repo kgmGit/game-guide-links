@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Site\DestroyRequest;
 use App\Http\Requests\Site\StoreRequest;
 use App\Http\Requests\Site\UpdateRequest;
 use App\Http\Resources\SiteResource;
 use App\Models\Game;
 use App\Models\Site;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class SiteController extends Controller
 {
@@ -74,13 +77,28 @@ class SiteController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * サイト削除
      *
-     * @param  \App\Models\Site  $site
-     * @return \Illuminate\Http\Response
+     * @param DestroyRequest $request
+     * @param Game $game
+     * @param Site $site
+     * @return JsonResponse
      */
-    public function destroy(Site $site)
+    public function destroy(DestroyRequest $request, Game $game, Site $site): JsonResponse
     {
-        //
+        DB::beginTransaction();
+        try {
+            $site->favorites()->delete();
+            $site->likes()->delete();
+            $site->reports()->delete();
+            $site->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            abort(500, 'サイト削除処理中にエラーが発生しました');
+        }
+
+        return response()->json(null, 204);
     }
 }

@@ -24,4 +24,11 @@ class SitePolicy
             ? $this->allow()
             : $this->deny('ユーザが所有する攻略サイトではありません');
     }
+
+    public function destroy(User $user, Site $site): Response
+    {
+        return $site->user_id == $user->id
+            ? $this->allow()
+            : $this->deny('ユーザが所有する攻略サイトではありません');
+    }
 }
