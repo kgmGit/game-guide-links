@@ -38,7 +38,7 @@
               <ValidationProvider
                 immediate
                 vid="outline"
-                rules="required|max:30"
+                rules="required|max:200"
                 v-slot="{ errors, valid }"
               >
                 <b-form-textarea
@@ -215,7 +215,15 @@ export default {
         });
     },
     async update() {
-      console.log("更新");
+      await http
+        .patch(`/api/games/${this.gameTitle}/articles/${this.id}`, this.form)
+        .then(() => {
+          this.$store.dispatch("message/setContent", "攻略記事を更新しました");
+          this.$router.push("/games/" + this.gameTitle);
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async deleteArticle() {
       console.log("削除");

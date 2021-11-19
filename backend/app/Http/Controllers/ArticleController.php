@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\StoreRequest;
+use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleWithContentResource;
 use App\Models\Article;
@@ -65,26 +66,20 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 記事更新
      *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
+     * @param UpdateRequest $request
+     * @param Game $game
+     * @param Article $article
+     * @return ArticleWithContentResource
      */
-    public function edit(Article $article)
+    public function update(UpdateRequest $request, Game $game, Article $article): ArticleWithContentResource
     {
-        //
-    }
+        $validated = $request->validated();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Article $article)
-    {
-        //
+        $article->fill($validated)->save();
+
+        return new ArticleWithContentResource($article);
     }
 
     /**
