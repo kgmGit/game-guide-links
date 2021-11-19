@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Article\DestroyRequest;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\ArticleResource;
@@ -10,6 +11,7 @@ use App\Models\Article;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -82,14 +84,21 @@ class ArticleController extends Controller
         return new ArticleWithContentResource($article);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Article $article)
+    public function destroy(DestroyRequest $request, Game $game, Article $article)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $article->favorites()->delete();
+            $article->likes()->delete();
+            $article->reports()->delete();
+            $article->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            abort(500, '記事削除処理中にエラーが発生しました');
+        }
+
+        return response()->json(null, 204);
     }
 }

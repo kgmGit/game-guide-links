@@ -226,7 +226,15 @@ export default {
         });
     },
     async deleteArticle() {
-      console.log("削除");
+      await http
+        .delete(`/api/games/${this.gameTitle}/articles/${this.id}`, this.form)
+        .then(() => {
+          this.$store.dispatch("message/setContent", "攻略記事を削除しました");
+          this.$router.push("/games/" + this.gameTitle);
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async fetchArticle() {
       await http
