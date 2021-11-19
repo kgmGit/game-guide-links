@@ -58,6 +58,22 @@ class ShowTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test異常系_紐付いているゲームでない(): void
+    {
+        $user = User::factory()->create(['name' => 'name']);
+        $game = $user->games()->create(['title' => 'game_title']);
+        Site::factory()->for($user)->for($game)->create([
+            'title' => 'title',
+            'url' => 'url',
+            'description' => 'description',
+        ]);
+
+        $user->games()->create(['title' => 'not_link_game_title']);
+
+        $response = $this->json('GET', 'api/games/not_link_game_title/sites/1');
+        $response->assertStatus(404);
+    }
+
     public function test異常系_記事IDが存在しない(): void
     {
         $user = User::factory()->create(['name' => 'name']);

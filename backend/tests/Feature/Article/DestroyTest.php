@@ -96,6 +96,29 @@ class DestroyTest extends TestCase
         $this->assertEquals($createArticle->content, $article->content);
     }
 
+    public function test異常系_紐付いているゲームでない(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $game = $user->games()->create(['title' => 'game_title']);
+        $createArticle = Article::factory()->for($user)->for($game)->create();
+
+        $user->games()->create(['title' => 'not_link_game_title']);
+
+        $this->actingAs($user);
+        $response = $this->json('DELETE', 'api/games/not_link_game_title/articles/1');
+
+        $response->assertStatus(404);
+
+        /** @var Article $article */
+        $article = Article::query()->first();
+        $this->assertEquals(1, $article->id);
+        $this->assertEquals($user->id, $article->user_id);
+        $this->assertEquals($createArticle->title, $article->title);
+        $this->assertEquals($createArticle->outline, $article->outline);
+        $this->assertEquals($createArticle->content, $article->content);
+    }
+
     public function test異常系_未ログイン(): void
     {
         /** @var User $user */

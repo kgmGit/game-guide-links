@@ -141,6 +141,39 @@ class UpdateTest extends TestCase
         $this->assertEquals($preBody['content'], $article->content);
     }
 
+    public function test異常系_紐付いているゲームでない(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $game = $user->games()->create(['title' => 'game_title']);
+        $preBody = [
+            'title' => 'article_title',
+            'outline' => '概要',
+            'content' => '<p>コンテンツ</p>'
+        ];
+        Article::factory()->for($user)->for($game)->create($preBody);
+        $body = [
+            'title' => 'update_title',
+            'outline' => '更新概要',
+            'content' => '<p>更新コンテンツ</p>'
+        ];
+
+        $user->games()->create(['title' => 'not_link_game_title']);
+
+        $this->actingAs($user);
+        $response = $this->json('PATCH', 'api/games/not_link_game_title/articles/1', $body);
+
+        $response->assertStatus(404);
+
+        /** @var Article $article */
+        $article = Article::query()->first();
+        $this->assertEquals(1, $article->id);
+        $this->assertEquals($user->id, $article->user_id);
+        $this->assertEquals($preBody['title'], $article->title);
+        $this->assertEquals($preBody['outline'], $article->outline);
+        $this->assertEquals($preBody['content'], $article->content);
+    }
+
     public function test異常系_未ログイン(): void
     {
         /** @var User $user */
