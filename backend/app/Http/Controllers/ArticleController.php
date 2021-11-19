@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Article\StoreRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleWithContentResource;
 use App\Models\Article;
@@ -34,14 +35,20 @@ class ArticleController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 記事追加
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @param Game $game
+     * @return ArticleWithContentResource
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request, Game $game): ArticleWithContentResource
     {
-        //
+        $validated = $request->validated();
+        $article = auth()->user()->articles()->make($validated);
+        $article->game()->associate($game);
+        $article->save();
+
+        return new ArticleWithContentResource($article);
     }
 
     /**

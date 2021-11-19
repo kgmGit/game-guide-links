@@ -58,7 +58,7 @@
               <ValidationProvider
                 immediate
                 vid="content"
-                rules="required"
+                rules="required|max_byte:6000"
                 v-slot="{ errors, valid }"
               >
                 <vue-editor
@@ -125,6 +125,7 @@ export default {
   data() {
     return {
       processing: false,
+      gameTitle: "",
       form: {
         title: "",
         outline: "",
@@ -203,7 +204,15 @@ export default {
       }
     },
     async register() {
-      console.log("登録");
+      await http
+        .post(`/api/games/${this.gameTitle}/articles`, this.form)
+        .then(() => {
+          this.$store.dispatch("message/setContent", "攻略記事を登録しました");
+          this.$router.push("/games/" + this.gameTitle);
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async update() {
       console.log("更新");
@@ -211,26 +220,27 @@ export default {
     async deleteArticle() {
       console.log("削除");
     },
-    async fetchArticle(gameTitle, articleId) {
-      try {
-        this.processing = true;
-
-        await http
-          .get("/api/games/" + gameTitle + "/articles/" + articleId)
-          .then((response) => {
-            this.form = response.data.data;
-          })
-          .catch(() => {
-            this.$router.replace({ name: "Error" });
-          });
-      } finally {
-        this.processing = false;
-      }
+    async fetchArticle() {
+      await http
+        .get("/api/games/" + this.gameTitle + "/articles/" + this.id)
+        .then((response) => {
+          this.form = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
   },
   async created() {
-    if (this.isEdit) {
-      await this.fetchArticle(this.$route.params.game_title, this.id);
+    try {
+      this.processing = true;
+
+      this.gameTitle = this.$route.params.game_title;
+      if (this.isEdit) {
+        await this.fetchArticle();
+      }
+    } finally {
+      this.processing = false;
     }
   },
 };

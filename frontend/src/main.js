@@ -57,6 +57,12 @@ extend("url", {
   },
   message: "有効なURLではありません",
 });
+extend("max_byte", {
+  validate(value, byte) {
+    return new Blob([value]).size <= byte;
+  },
+  message: "入力内容が多すぎます",
+});
 localize("ja", ja);
 Vue.component("ValidationProvider", ValidationProvider);
 Vue.component("ValidationObserver", ValidationObserver);
