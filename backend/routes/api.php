@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/games/{game:title}/sites/{site:id}', [SiteController::class, 'update']);
         Route::delete('/games/{game:title}/sites/{site:id}', [SiteController::class, 'destroy']);
         Route::get('/favorites/sites', [SiteController::class, 'favorites']);
+        Route::get('/posts/sites', [SiteController::class, 'posts']);
 
         Route::post('/games/{game:title}/articles', [ArticleController::class, 'store']);
         Route::patch('/games/{game:title}/articles/{article:id}', [ArticleController::class, 'update']);

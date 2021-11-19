@@ -3,7 +3,9 @@
     <div v-for="title in gameTitles" :key="title">
       <b-card class="mb-5">
         <template #header>
-          <div class="text-center">{{ title }}</div>
+          <b-link :to="'/games/' + title">
+            <div class="text-center">{{ title }}</div>
+          </b-link>
         </template>
         <b-card-body>
           <sites
@@ -17,6 +19,7 @@
 
 <script>
 import Sites from "@/components/gameDetail/site/Sites.vue";
+import { http } from "@/Services/Http";
 
 export default {
   components: {
@@ -30,35 +33,14 @@ export default {
   },
   methods: {
     async fetchSites() {
-      this.sites = [];
-      for (let i = 0; i < 30; i++) {
-        this.sites.push({
-          id: i,
-          title: "title" + i,
-          url: "url" + i,
-          favorites_count: 0,
-          favorited: false,
-          likes_count: 0,
-          liked: false,
-          owner: true,
-          owner_name: "owner",
-          game_title: "game1",
+      await http
+        .get("/api/posts/sites")
+        .then((response) => {
+          this.sites = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
         });
-      }
-      for (let i = 0; i < 6; i++) {
-        this.sites.push({
-          id: i,
-          title: "other_title" + i,
-          url: "other_url" + i,
-          favorites_count: 0,
-          favorited: false,
-          likes_count: 0,
-          liked: false,
-          owner: true,
-          owner_name: "owner",
-          game_title: "other_game",
-        });
-      }
     },
   },
   async created() {

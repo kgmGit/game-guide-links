@@ -119,4 +119,18 @@ class SiteController extends Controller
 
         return SiteResource::collection($sites);
     }
+
+    /**
+     * 投稿サイト一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function posts(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+
+        $sites = $user->sites()->with(['user', 'favorites', 'likes', 'game'])->get();
+
+        return SiteResource::collection($sites);
+    }
 }
