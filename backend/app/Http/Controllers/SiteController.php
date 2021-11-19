@@ -101,4 +101,22 @@ class SiteController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * お気に入りサイト一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function favorites(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+
+        $sites = Site::query()->join('favorites', function ($join) {
+            $join->on('sites.id', '=', 'favorites.favorable_id')
+                ->where('favorites.favorable_type', '=', 'App\\Models\\Site');
+        })->where('favorites.user_id', '=', $user->id)
+            ->select('sites.*')->with(['user', 'favorites', 'likes', 'game'])->get();
+
+        return SiteResource::collection($sites);
+    }
 }
