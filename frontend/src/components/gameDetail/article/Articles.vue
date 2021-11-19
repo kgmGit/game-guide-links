@@ -13,7 +13,7 @@
       />
     </div>
     <b-pagination
-      v-if="articles.length > 0"
+      v-if="articles.length > perPage"
       :total-rows="articles.length"
       v-model="currentPage"
       :per-page="perPage"
