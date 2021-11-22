@@ -4,6 +4,7 @@
       v-model="searchStr"
       placeholder="ゲーム名を入力"
       @keypress.prevent.enter="pressEnter"
+      @input="onInput"
       autocomplete="off"
       maxlength="30"
     ></b-form-input>
@@ -33,9 +34,8 @@ export default {
     return {
       processing: false,
       searchStr: "",
-      searchedStr: "",
       games: null,
-      searchIntervalId: null,
+      timeOutId: null,
     };
   },
   computed: {
@@ -43,7 +43,7 @@ export default {
       isVerified: "auth/isVerified",
     }),
     SEARCH_INTERVAL() {
-      return 500;
+      return 200;
     },
   },
   methods: {
@@ -87,34 +87,30 @@ export default {
         this.processing = false;
       }
     },
-    async getGames() {
-      if (!this.searchStr) {
-        this.searchedStr = this.searchStr;
+
+    onInput() {
+      if (this.timeOutId) {
+        clearTimeout(this.timeOutId);
+      }
+      this.timeOutId = null;
+
+      if (this.searchStr) {
+        this.timeOutId = setTimeout(
+          this.getGames.bind(this),
+          this.SEARCH_INTERVAL
+        );
+      } else {
         this.games = null;
-        return;
       }
-
-      if (this.searchStr === this.searchedStr) {
-        return;
-      }
-
-      this.searchedStr = this.searchStr;
+    },
+    async getGames() {
       await http
-        .get("/api/games/?title=" + this.searchedStr)
+        .get("/api/games/?title=" + this.searchStr)
         .then((response) => {
           this.games = response.data.data;
         })
         .catch(() => {});
     },
-  },
-  created() {
-    this.searchIntervalId = setInterval(
-      this.getGames.bind(this),
-      this.SEARCH_INTERVAL
-    );
-  },
-  beforeDestroy() {
-    clearInterval(this.searchIntervalId);
   },
 };
 </script>
