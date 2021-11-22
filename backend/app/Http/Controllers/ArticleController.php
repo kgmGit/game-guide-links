@@ -118,4 +118,18 @@ class ArticleController extends Controller
 
         return ArticleResource::collection($articles);
     }
+
+    /**
+     * 投稿記事一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function posts(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+
+        $articles = $user->articles()->with(['user', 'favorites', 'likes', 'game'])->get();
+
+        return ArticleResource::collection($articles);
+    }
 }

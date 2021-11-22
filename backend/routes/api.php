@@ -49,5 +49,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/games/{game:title}/articles/{article:id}', [ArticleController::class, 'update']);
         Route::delete('/games/{game:title}/articles/{article:id}', [ArticleController::class, 'destroy']);
         Route::get('/favorites/articles', [ArticleController::class, 'favorites']);
+        Route::get('/posts/articles', [ArticleController::class, 'posts']);
     });
 });
