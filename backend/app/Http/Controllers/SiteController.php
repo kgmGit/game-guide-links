@@ -111,10 +111,9 @@ class SiteController extends Controller
     {
         $user = auth()->user();
 
-        $sites = Site::query()->join('favorites', function ($join) {
-            $join->on('sites.id', '=', 'favorites.favorable_id')
-                ->where('favorites.favorable_type', '=', 'App\\Models\\Site');
-        })->where('favorites.user_id', '=', $user->id)
+        $sites = Site::query()->join('favorites', 'sites.id', '=', 'favorites.favorable_id')
+            ->where('favorites.favorable_type', '=', 'App\\Models\\Site')
+            ->where('favorites.user_id', '=', $user->id)
             ->select('sites.*')->with(['user', 'favorites', 'likes', 'game'])->get();
 
         return SiteResource::collection($sites);
