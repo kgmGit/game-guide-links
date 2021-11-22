@@ -132,4 +132,30 @@ class ArticleController extends Controller
 
         return ArticleResource::collection($articles);
     }
+
+    /**
+     * お気に入り登録
+     *
+     * @param Article $article
+     * @return void
+     */
+    public function favorite(Article $article)
+    {
+        $article->registerFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * お気に入り解除
+     *
+     * @param Article $article
+     * @return void
+     */
+    public function unfavorite(Article $article)
+    {
+        $article->unregisterFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
 }

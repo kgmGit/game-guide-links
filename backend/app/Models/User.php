@@ -99,4 +99,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Report::class);
     }
+
+    public function favoriteGames()
+    {
+        return $this->morphedByMany(Game::class, 'favorable', 'favorites');
+    }
+
+    public function favoriteSites()
+    {
+        return $this->morphedByMany(Site::class, 'favorable', 'favorites');
+    }
+
+    public function favoriteArticles()
+    {
+        return $this->morphedByMany(Article::class, 'favorable', 'favorites');
+    }
 }

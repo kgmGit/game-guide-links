@@ -179,25 +179,27 @@ export default {
         this.processing = true;
 
         const isAdd = !this.game.favorited;
+        this.game.favorited = isAdd;
+        this.game.favorites_count += isAdd ? 1 : -1;
+
         if (isAdd) {
           await this.favorite();
         } else {
           await this.unfavorite();
         }
-
-        this.game.favorited = isAdd;
-        this.game.favorites_count += isAdd ? 1 : -1;
       } finally {
         this.processing = false;
       }
     },
     async favorite() {
-      // todo:ゲームお気に入り登録API呼び出し
-      console.log("favorite");
+      await http.put(`/api/games/${this.game.title}/favorite`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
     async unfavorite() {
-      // todo:ゲームお気に入り登録API呼び出し
-      console.log("unfavorite");
+      await http.delete(`/api/games/${this.game.title}/favorite`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
 
     clickReport() {

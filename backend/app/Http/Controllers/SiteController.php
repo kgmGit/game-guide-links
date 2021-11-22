@@ -132,4 +132,30 @@ class SiteController extends Controller
 
         return SiteResource::collection($sites);
     }
+
+    /**
+     * お気に入り登録
+     *
+     * @param Site $site
+     * @return void
+     */
+    public function favorite(Site $site)
+    {
+        $site->registerFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * お気に入り解除
+     *
+     * @param Site $site
+     * @return void
+     */
+    public function unfavorite(Site $site)
+    {
+        $site->unregisterFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
 }

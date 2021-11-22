@@ -3,7 +3,6 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\SiteController;
-use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,5 +49,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/games/{game:title}/articles/{article:id}', [ArticleController::class, 'destroy']);
         Route::get('/favorites/articles', [ArticleController::class, 'favorites']);
         Route::get('/posts/articles', [ArticleController::class, 'posts']);
+
+        Route::put('/games/{game:title}/favorite', [GameController::class, 'favorite']);
+        Route::put('/sites/{site:id}/favorite', [SiteController::class, 'favorite']);
+        Route::put('/articles/{article:id}/favorite', [ArticleController::class, 'favorite']);
+        Route::delete('/games/{game:title}/favorite', [GameController::class, 'unfavorite']);
+        Route::delete('/sites/{site:id}/favorite', [SiteController::class, 'unfavorite']);
+        Route::delete('/articles/{article:id}/favorite', [ArticleController::class, 'unfavorite']);
     });
 });

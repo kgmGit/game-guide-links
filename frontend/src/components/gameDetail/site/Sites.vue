@@ -35,6 +35,7 @@ import { mapGetters } from "vuex";
 import Site from "@/components/gameDetail/site/Site.vue";
 import AuthModal from "@/components/AuthModal.vue";
 import ReportModal from "@/components/ReportModal.vue";
+import { http } from "@/Services/Http";
 
 export default {
   components: { Site, AuthModal, ReportModal },
@@ -116,26 +117,27 @@ export default {
 
         const index = this.sites.findIndex((site) => site.id === id);
         const isAdd = !this.sites[index].favorited;
+        this.sites[index].favorited = isAdd;
+        this.sites[index].favorites_count += isAdd ? 1 : -1;
 
         if (isAdd) {
           await this.favorite(id);
         } else {
           await this.unfavorite(id);
         }
-
-        this.sites[index].favorited = isAdd;
-        this.sites[index].favorites_count += isAdd ? 1 : -1;
       } finally {
         this.processing = false;
       }
     },
     async favorite(id) {
-      // todo: サイトお気に入り登録API呼び出し
-      console.log("site favorite" + id);
+      await http.put(`/api/sites/${id}/favorite`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
     async unfavorite(id) {
-      // todo: サイトお気に入り解除API呼び出し
-      console.log("site unfavorite" + id);
+      await http.delete(`/api/sites/${id}/favorite`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
 
     clickReport(id) {

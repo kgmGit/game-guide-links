@@ -88,4 +88,30 @@ class GameController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * お気に入り登録
+     *
+     * @param Game $game
+     * @return void
+     */
+    public function favorite(Game $game)
+    {
+        $game->registerFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * お気に入り解除
+     *
+     * @param Game $game
+     * @return void
+     */
+    public function unfavorite(Game $game)
+    {
+        $game->unregisterFavorite(auth()->id());
+
+        return response()->json(null, 204);
+    }
 }
