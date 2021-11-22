@@ -101,4 +101,21 @@ class ArticleController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * お気に入り記事一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function favorites(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+
+        $articles = Article::query()->join('favorites', 'articles.id', '=', 'favorites.favorable_id')
+            ->where('favorites.favorable_type', '=', 'App\\Models\\Article')
+            ->where('favorites.user_id', '=', $user->id)
+            ->select('articles.*')->with(['user', 'favorites', 'likes', 'game'])->get();
+
+        return ArticleResource::collection($articles);
+    }
 }

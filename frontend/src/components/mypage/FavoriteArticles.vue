@@ -3,7 +3,9 @@
     <div v-for="title in gameTitles" :key="title">
       <b-card class="mb-5">
         <template #header>
-          <div class="text-center">{{ title }}</div>
+          <b-link :to="'/games/' + title">
+            <div class="text-center">{{ title }}</div>
+          </b-link>
         </template>
         <b-card-body>
           <articles
@@ -19,6 +21,7 @@
 
 <script>
 import Articles from "@/components/gameDetail/article/Articles.vue";
+import { http } from "@/Services/Http";
 
 export default {
   components: {
@@ -32,35 +35,14 @@ export default {
   },
   methods: {
     async fetchArticle() {
-      this.articles = [];
-      for (let i = 0; i < 30; i++) {
-        this.articles.push({
-          id: i,
-          title: "title" + i,
-          outline: "outline" + i,
-          favorites_count: 1,
-          favorited: true,
-          likes_count: 0,
-          liked: false,
-          owner: false,
-          owner_name: "owner",
-          game_title: "game1",
+      await http
+        .get("/api/favorites/articles")
+        .then((response) => {
+          this.articles = response.data.data;
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
         });
-      }
-      for (let i = 0; i < 6; i++) {
-        this.articles.push({
-          id: i,
-          title: "other_title" + i,
-          outline: "other_outline" + i,
-          favorites_count: 1,
-          favorited: true,
-          likes_count: 0,
-          liked: false,
-          owner: false,
-          owner_name: "owner",
-          game_title: "other_game",
-        });
-      }
     },
   },
   async created() {
