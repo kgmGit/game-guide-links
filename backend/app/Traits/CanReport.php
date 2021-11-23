@@ -16,7 +16,7 @@ trait CanReport
 
     public function reportUsers(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'reportable', 'reports');
+        return $this->morphToMany(User::class, 'reportable', 'reports')->withTimestamps();
     }
 
     public function createReport(User $user, string $content): Report

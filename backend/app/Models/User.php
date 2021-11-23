@@ -102,41 +102,41 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function favoriteGames()
     {
-        return $this->morphedByMany(Game::class, 'favorable', 'favorites');
+        return $this->morphedByMany(Game::class, 'favorable', 'favorites')->withTimestamps();
     }
 
     public function favoriteSites()
     {
-        return $this->morphedByMany(Site::class, 'favorable', 'favorites');
+        return $this->morphedByMany(Site::class, 'favorable', 'favorites')->withTimestamps();
     }
 
     public function favoriteArticles()
     {
-        return $this->morphedByMany(Article::class, 'favorable', 'favorites');
+        return $this->morphedByMany(Article::class, 'favorable', 'favorites')->withTimestamps();
     }
 
     public function likeSites()
     {
-        return $this->morphedByMany(Site::class, 'likable', 'likes');
+        return $this->morphedByMany(Site::class, 'likable', 'likes')->withTimestamps();
     }
 
     public function likeArticles()
     {
-        return $this->morphedByMany(Article::class, 'likable', 'likes');
+        return $this->morphedByMany(Article::class, 'likable', 'likes')->withTimestamps();
     }
 
     public function reportGames()
     {
-        return $this->morphedByMany(Game::class, 'reportable', 'reports');
+        return $this->morphedByMany(Game::class, 'reportable', 'reports')->withTimestamps();
     }
 
     public function reportSites()
     {
-        return $this->morphedByMany(Site::class, 'reportable', 'reports');
+        return $this->morphedByMany(Site::class, 'reportable', 'reports')->withTimestamps();
     }
 
     public function reportArticles()
     {
-        return $this->morphedByMany(Article::class, 'reportable', 'reports');
+        return $this->morphedByMany(Article::class, 'reportable', 'reports')->withTimestamps();
     }
 }

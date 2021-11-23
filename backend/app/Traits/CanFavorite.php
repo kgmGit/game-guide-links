@@ -16,7 +16,7 @@ trait CanFavorite
 
     public function favoriteUsers(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'favorable', 'favorites');
+        return $this->morphToMany(User::class, 'favorable', 'favorites')->withTimestamps();
     }
 
     public function registerFavorite(int $user_id): void

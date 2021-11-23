@@ -16,7 +16,7 @@ trait CanLike
 
     public function likeUsers(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'likable', 'likes');
+        return $this->morphToMany(User::class, 'likable', 'likes')->withTimestamps();
     }
 
     public function registerLike(int $user_id): void
