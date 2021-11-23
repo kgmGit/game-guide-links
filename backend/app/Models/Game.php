@@ -3,21 +3,20 @@
 namespace App\Models;
 
 use App\Traits\CanFavorite;
+use App\Traits\CanReport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @property int $id
  * @property int $user_id
  * @property string $title
- * @property MorphMany $favorites
  */
 class Game extends Model
 {
-    use HasFactory, CanFavorite;
+    use HasFactory, CanFavorite, CanReport;
 
 
     protected $fillable = [
@@ -37,10 +36,5 @@ class Game extends Model
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
-    }
-
-    public function reports(): MorphMany
-    {
-        return $this->morphMany(Report::class, 'reportable');
     }
 }

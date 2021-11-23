@@ -61,5 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/articles/{article:id}/like', [ArticleController::class, 'like']);
         Route::delete('/sites/{site:id}/like', [SiteController::class, 'unlike']);
         Route::delete('/articles/{article:id}/like', [ArticleController::class, 'unlike']);
+
+        Route::post('/games/{game:title}/report', [GameController::class, 'report']);
+        Route::post('/sites/{site:id}/report', [SiteController::class, 'report']);
+        Route::post('/articles/{article:id}/report', [ArticleController::class, 'report']);
     });
 });

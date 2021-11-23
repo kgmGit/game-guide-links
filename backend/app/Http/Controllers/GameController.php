@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Game\DestroyRequest;
 use App\Http\Requests\Game\StoreRequest;
+use App\Http\Requests\Report\ReportRequest;
 use App\Http\Resources\GameResource;
+use App\Http\Resources\ReportResource;
 use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -113,5 +115,20 @@ class GameController extends Controller
         $game->unregisterFavorite(auth()->id());
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * 通報登録
+     *
+     * @param ReportRequest $request
+     * @param Game $game
+     * @return ReportResource
+     */
+    public function report(ReportRequest $request, Game $game): ReportResource
+    {
+        $report = $game->createReport(auth()->user(), $request->validated()['content']);
+        $report->game_title = $game->title;
+
+        return new ReportResource($report);
     }
 }

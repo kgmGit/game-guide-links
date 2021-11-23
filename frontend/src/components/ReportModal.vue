@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { http } from "@/Services/Http";
 export default {
   props: {
     gameTitle: {
@@ -86,15 +87,35 @@ export default {
       content: "",
     };
   },
+  computed: {
+    reportUrl: function () {
+      if (this.site) {
+        return `/api/sites/${this.site.id}/report`;
+      } else if (this.article) {
+        return `/api/articles/${this.article.id}/report`;
+      } else {
+        return `/api/games/${this.gameTitle}/report`;
+      }
+    },
+  },
   methods: {
     async report() {
       if (this.processing) return;
       try {
         this.processing = true;
 
-        console.log("通報:" + this.content);
-        this.$store.dispatch("message/setContent", "通報が完了しました");
-        this.$emit("reported");
+        const body = {
+          content: this.content,
+        };
+        await http
+          .post(this.reportUrl, body)
+          .then(() => {
+            this.$store.dispatch("message/setContent", "通報が完了しました");
+            this.$emit("reported");
+          })
+          .catch(() => {
+            this.$router.replace({ name: "Error" });
+          });
       } finally {
         this.processing = false;
       }

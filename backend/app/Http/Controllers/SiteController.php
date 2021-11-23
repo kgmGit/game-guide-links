@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Report\ReportRequest;
 use App\Http\Requests\Site\DestroyRequest;
 use App\Http\Requests\Site\StoreRequest;
 use App\Http\Requests\Site\UpdateRequest;
+use App\Http\Resources\ReportResource;
 use App\Http\Resources\SiteResource;
 use App\Models\Game;
 use App\Models\Site;
@@ -183,5 +185,20 @@ class SiteController extends Controller
         $site->unregisterLike(auth()->id());
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * 通報登録
+     *
+     * @param ReportRequest $request
+     * @param Site $site
+     * @return ReportResource
+     */
+    public function report(ReportRequest $request, Site $site): ReportResource
+    {
+        $report = $site->createReport(auth()->user(), $request->validated()['content']);
+        $report->game_title = $site->game->title;
+
+        return new ReportResource($report);
     }
 }

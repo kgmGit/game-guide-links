@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Article\DestroyRequest;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
+use App\Http\Requests\Report\ReportRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleWithContentResource;
+use App\Http\Resources\ReportResource;
 use App\Models\Article;
 use App\Models\Game;
 use Illuminate\Http\Request;
@@ -183,5 +185,20 @@ class ArticleController extends Controller
         $article->unregisterLike(auth()->id());
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * 通報登録
+     *
+     * @param ReportRequest $request
+     * @param Article $article
+     * @return ReportResource
+     */
+    public function report(ReportRequest $request, Article $article): ReportResource
+    {
+        $report = $article->createReport(auth()->user(), $request->validated()['content']);
+        $report->game_title = $article->game->title;
+
+        return new ReportResource($report);
     }
 }
