@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\CanFavorite;
+use App\Traits\CanLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  */
 class Site extends Model
 {
-    use HasFactory, CanFavorite;
+    use HasFactory, CanFavorite, CanLike;
 
     protected $fillable = [
         'title',
@@ -34,11 +35,6 @@ class Site extends Model
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
-    }
-
-    public function likes(): MorphMany
-    {
-        return $this->morphMany(Like::class, 'likable');
     }
 
     public function reports(): MorphMany

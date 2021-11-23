@@ -158,4 +158,30 @@ class ArticleController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * いいね登録
+     *
+     * @param Article $article
+     * @return void
+     */
+    public function like(Article $article)
+    {
+        $article->registerLike(auth()->id());
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * いいね解除
+     *
+     * @param Article $article
+     * @return void
+     */
+    public function unlike(Article $article)
+    {
+        $article->unregisterLike(auth()->id());
+
+        return response()->json(null, 204);
+    }
 }

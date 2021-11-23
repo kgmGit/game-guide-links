@@ -114,4 +114,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->morphedByMany(Article::class, 'favorable', 'favorites');
     }
+
+    public function likeSites()
+    {
+        return $this->morphedByMany(Site::class, 'likable', 'likes');
+    }
+
+    public function likeArticles()
+    {
+        return $this->morphedByMany(Article::class, 'likable', 'likes');
+    }
 }

@@ -158,4 +158,30 @@ class SiteController extends Controller
 
         return response()->json(null, 204);
     }
+
+    /**
+     * いいね登録
+     *
+     * @param Site $site
+     * @return void
+     */
+    public function like(Site $site)
+    {
+        $site->registerLike(auth()->id());
+
+        return response()->json(null, 204);
+    }
+
+    /**
+     * いいね解除
+     *
+     * @param Site $site
+     * @return void
+     */
+    public function unlike(Site $site)
+    {
+        $site->unregisterLike(auth()->id());
+
+        return response()->json(null, 204);
+    }
 }

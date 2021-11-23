@@ -86,26 +86,27 @@ export default {
 
         const index = this.articles.findIndex((article) => article.id === id);
         const isAdd = !this.articles[index].liked;
+        this.articles[index].liked = isAdd;
+        this.articles[index].likes_count += isAdd ? 1 : -1;
 
         if (isAdd) {
           await this.like(id);
         } else {
           await this.unlike(id);
         }
-
-        this.articles[index].liked = isAdd;
-        this.articles[index].likes_count += isAdd ? 1 : -1;
       } finally {
         this.processing = false;
       }
     },
     async like(id) {
-      // todo: サイトいいね登録API呼び出し
-      console.log("article like" + id);
+      await http.put(`/api/articles/${id}/like`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
     async unlike(id) {
-      // todo: サイトいいね解除API呼び出し
-      console.log("article unlike" + id);
+      await http.delete(`/api/articles/${id}/like`).catch(() => {
+        this.$router.replace({ name: "Error" });
+      });
     },
 
     async clickFavorite(id) {

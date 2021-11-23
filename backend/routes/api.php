@@ -56,5 +56,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/games/{game:title}/favorite', [GameController::class, 'unfavorite']);
         Route::delete('/sites/{site:id}/favorite', [SiteController::class, 'unfavorite']);
         Route::delete('/articles/{article:id}/favorite', [ArticleController::class, 'unfavorite']);
+
+        Route::put('/sites/{site:id}/like', [SiteController::class, 'like']);
+        Route::put('/articles/{article:id}/like', [ArticleController::class, 'like']);
+        Route::delete('/sites/{site:id}/like', [SiteController::class, 'unlike']);
+        Route::delete('/articles/{article:id}/like', [ArticleController::class, 'unlike']);
     });
 });
