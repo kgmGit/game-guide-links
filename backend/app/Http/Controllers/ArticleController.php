@@ -11,6 +11,7 @@ use App\Http\Resources\ArticleWithContentResource;
 use App\Http\Resources\ReportResource;
 use App\Models\Article;
 use App\Models\Game;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -113,10 +114,7 @@ class ArticleController extends Controller
     {
         $user = auth()->user();
 
-        $articles = Article::query()->join('favorites', 'articles.id', '=', 'favorites.favorable_id')
-            ->where('favorites.favorable_type', '=', 'App\\Models\\Article')
-            ->where('favorites.user_id', '=', $user->id)
-            ->select('articles.*')->with(['user', 'favorites', 'likes', 'game'])->get();
+        $articles = $user->favoriteArticles()->with(['user', 'favorites', 'likes', 'game'])->get();
 
         return ArticleResource::collection($articles);
     }
@@ -139,9 +137,9 @@ class ArticleController extends Controller
      * お気に入り登録
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function favorite(Article $article)
+    public function favorite(Article $article): JsonResponse
     {
         $article->registerFavorite(auth()->id());
 
@@ -152,9 +150,9 @@ class ArticleController extends Controller
      * お気に入り解除
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function unfavorite(Article $article)
+    public function unfavorite(Article $article): JsonResponse
     {
         $article->unregisterFavorite(auth()->id());
 
@@ -165,9 +163,9 @@ class ArticleController extends Controller
      * いいね登録
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function like(Article $article)
+    public function like(Article $article): JsonResponse
     {
         $article->registerLike(auth()->id());
 
@@ -178,9 +176,9 @@ class ArticleController extends Controller
      * いいね解除
      *
      * @param Article $article
-     * @return void
+     * @return JsonResponse
      */
-    public function unlike(Article $article)
+    public function unlike(Article $article): JsonResponse
     {
         $article->unregisterLike(auth()->id());
 

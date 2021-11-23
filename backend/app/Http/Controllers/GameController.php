@@ -95,9 +95,9 @@ class GameController extends Controller
      * お気に入り登録
      *
      * @param Game $game
-     * @return void
+     * @return JsonResponse
      */
-    public function favorite(Game $game)
+    public function favorite(Game $game): JsonResponse
     {
         $game->registerFavorite(auth()->id());
 
@@ -108,9 +108,9 @@ class GameController extends Controller
      * お気に入り解除
      *
      * @param Game $game
-     * @return void
+     * @return JsonResponse
      */
-    public function unfavorite(Game $game)
+    public function unfavorite(Game $game): JsonResponse
     {
         $game->unregisterFavorite(auth()->id());
 

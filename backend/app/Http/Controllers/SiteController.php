@@ -112,11 +112,7 @@ class SiteController extends Controller
     public function favorites(): AnonymousResourceCollection
     {
         $user = auth()->user();
-
-        $sites = Site::query()->join('favorites', 'sites.id', '=', 'favorites.favorable_id')
-            ->where('favorites.favorable_type', '=', 'App\\Models\\Site')
-            ->where('favorites.user_id', '=', $user->id)
-            ->select('sites.*')->with(['user', 'favorites', 'likes', 'game'])->get();
+        $sites = $user->favoriteSites()->with(['user', 'favorites', 'likes', 'game'])->get();
 
         return SiteResource::collection($sites);
     }
@@ -139,9 +135,9 @@ class SiteController extends Controller
      * お気に入り登録
      *
      * @param Site $site
-     * @return void
+     * @return JsonResponse
      */
-    public function favorite(Site $site)
+    public function favorite(Site $site): JsonResponse
     {
         $site->registerFavorite(auth()->id());
 
@@ -152,9 +148,9 @@ class SiteController extends Controller
      * お気に入り解除
      *
      * @param Site $site
-     * @return void
+     * @return JsonResponse
      */
-    public function unfavorite(Site $site)
+    public function unfavorite(Site $site): JsonResponse
     {
         $site->unregisterFavorite(auth()->id());
 
@@ -165,9 +161,9 @@ class SiteController extends Controller
      * いいね登録
      *
      * @param Site $site
-     * @return void
+     * @return JsonResponse
      */
-    public function like(Site $site)
+    public function like(Site $site): JsonResponse
     {
         $site->registerLike(auth()->id());
 
@@ -178,9 +174,9 @@ class SiteController extends Controller
      * いいね解除
      *
      * @param Site $site
-     * @return void
+     * @return JsonResponse
      */
-    public function unlike(Site $site)
+    public function unlike(Site $site): JsonResponse
     {
         $site->unregisterLike(auth()->id());
 
