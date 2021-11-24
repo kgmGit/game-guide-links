@@ -92,6 +92,19 @@ class GameController extends Controller
     }
 
     /**
+     * お気に入りゲーム一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function favorites(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+        $games = $user->favoriteGames()->with(['favorites'])->get();
+
+        return GameResource::collection($games);
+    }
+
+    /**
      * お気に入り登録
      *
      * @param Game $game

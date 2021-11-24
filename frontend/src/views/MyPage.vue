@@ -6,6 +6,9 @@
           <b-list-group>
             <b-list-group-item>
               <b-dropdown block variant="outline-dark" text="お気に入り">
+                <b-dropdown-item to="/mypage/favorites/games"
+                  >ゲーム</b-dropdown-item
+                >
                 <b-dropdown-item to="/mypage/favorites/sites"
                   >攻略サイト</b-dropdown-item
                 >

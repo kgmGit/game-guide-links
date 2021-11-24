@@ -12,6 +12,7 @@ import GameDetail from "@/views/GameDetail.vue";
 import ArticleDetail from "@/views/article/ArticleDetail.vue";
 import ArticleEdit from "@/views/article/ArticleEdit.vue";
 import SiteEdit from "@/views/site/SiteEdit.vue";
+import FavoriteGames from "@/components/mypage/FavoriteGames.vue";
 import FavoriteSites from "@/components/mypage/FavoriteSites.vue";
 import PostSites from "@/components/mypage/PostSites.vue";
 import FavoriteArticles from "@/components/mypage/FavoriteArticles.vue";
@@ -69,6 +70,10 @@ const routes = [
     name: "MyPage",
     component: MyPage,
     children: [
+      {
+        path: "favorites/games",
+        component: FavoriteGames,
+      },
       {
         path: "favorites/sites",
         component: FavoriteSites,
