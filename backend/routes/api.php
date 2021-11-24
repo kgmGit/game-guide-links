@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SiteController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -65,5 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/games/{game:title}/report', [GameController::class, 'report']);
         Route::post('/sites/{site:id}/report', [SiteController::class, 'report']);
         Route::post('/articles/{article:id}/report', [ArticleController::class, 'report']);
+
+        Route::middleware('admin')->group(function () {
+            Route::get('/reports', [ReportController::class, 'index']);
+        });
     });
 });
