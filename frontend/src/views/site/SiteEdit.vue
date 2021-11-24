@@ -19,7 +19,7 @@
               <ValidationProvider
                 immediate
                 vid="title"
-                rules="required"
+                rules="required|max:20"
                 v-slot="{ errors, valid }"
               >
                 <b-form-input
@@ -38,7 +38,7 @@
               <ValidationProvider
                 immediate
                 vid="url"
-                rules="required|url: {require_protocol: true }"
+                rules="required|url: {require_protocol: true }|max:255"
                 v-slot="{ errors, valid }"
               >
                 <b-form-input
