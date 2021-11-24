@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::middleware('admin')->group(function () {
             Route::get('/reports', [ReportController::class, 'index']);
+            Route::delete('/reports/{report:id}', [ReportController::class, 'destroy']);
         });
     });
 });

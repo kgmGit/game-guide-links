@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Game;
 use App\Models\Report;
 use App\Models\Site;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -37,5 +38,18 @@ class ReportController extends Controller
             ->with(['user'])->get();
 
         return ReportResource::collection($reports);
+    }
+
+    /**
+     * 通報削除
+     *
+     * @param Report $report
+     * @return JsonResponse
+     */
+    public function destroy(Report $report): JsonResponse
+    {
+        $report->delete();
+
+        return response()->json(null, 204);
     }
 }

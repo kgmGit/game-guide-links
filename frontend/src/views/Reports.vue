@@ -16,11 +16,14 @@ export default {
   },
   data() {
     return {
+      processiong: false,
       reports: [],
     };
   },
   methods: {
     async complite(id) {
+      if (this.processiong) return;
+
       if (
         !(await this.$bvModal
           .msgBoxConfirm("通報内容を削除します。\nよろしいですか？")
@@ -28,8 +31,23 @@ export default {
       )
         return;
 
-      console.log("complite:" + id);
-      this.reports = this.reports.filter((report) => report.id !== id);
+      try {
+        this.processiong = true;
+        await this.deleteReport(id);
+        this.reports = this.reports.filter((report) => report.id !== id);
+      } finally {
+        this.processiong = false;
+      }
+    },
+    async deleteReport(id) {
+      await http
+        .delete("/api/reports/" + id)
+        .then(() => {
+          this.$store.dispatch("message/setContent", "通報内容を削除しました");
+        })
+        .catch(() => {
+          this.$router.replace({ name: "Error" });
+        });
     },
     async fetchReports() {
       await http
