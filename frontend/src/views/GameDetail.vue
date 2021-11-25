@@ -247,12 +247,11 @@ export default {
         .catch(() => {
           this.$router.replace({ name: "Error" });
         });
-
-      await this.fetchSites();
-      await this.fetchArticles();
     } finally {
       this.processing = false;
     }
+    this.fetchSites();
+    this.fetchArticles();
   },
 };
 </script>
