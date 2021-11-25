@@ -13,7 +13,7 @@ class IndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test正常系_クエリパラメータ無し(): void
+    public function test正常系_検索文字列無し(): void
     {
         $user1 = User::factory()->create();
 
@@ -22,12 +22,12 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => []
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_お気に入り有り_未ログイン(): void
+    public function test正常系_検索文字列有り_お気に入り有り_未ログイン(): void
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
@@ -43,7 +43,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -56,7 +56,7 @@ class IndexTest extends TestCase
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_お気に入り有り_お気に入り済み(): void
+    public function test正常系_検索文字列有り_お気に入り有り_お気に入り済み(): void
     {
         /** @var User $user1 */
         $user1 = User::factory()->create();
@@ -74,7 +74,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -87,7 +87,7 @@ class IndexTest extends TestCase
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_お気に入り有り_お気に入りしていない(): void
+    public function test正常系_検索文字列有り_お気に入り有り_お気に入りしていない(): void
     {
         /** @var User $user1 */
         $user1 = User::factory()->create();
@@ -104,7 +104,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -117,7 +117,7 @@ class IndexTest extends TestCase
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_作成者でない(): void
+    public function test正常系_検索文字列有り_作成者でない(): void
     {
         /** @var User $user1 */
         $user1 = User::factory()->create();
@@ -130,7 +130,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -143,7 +143,7 @@ class IndexTest extends TestCase
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_条件一致６以上(): void
+    public function test正常系_検索文字列有り_条件一致６以上(): void
     {
         $user1 = User::factory()->create();
 
@@ -160,54 +160,64 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games?title=aa');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 2,
                     'title' => 'aabb',
                     'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
                 ],
                 [
                     'id' => 3,
                     'title' => 'bbaa',
                     'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
                 ],
                 [
                     'id' => 4,
                     'title' => 'bbaacc',
                     'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
                 ],
                 [
                     'id' => 5,
                     'title' => 'aa4',
                     'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
                 ],
                 [
                     'id' => 6,
                     'title' => 'aa5',
                     'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
                 ],
             ]
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_ゲーム登録なし(): void
+    public function test正常系_検索文字列有り_ゲーム登録なし(): void
     {
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => []
         ]);
     }
 
-    public function test正常系_クエリパラメータ有り_未ログイン_所有者なしゲーム(): void
+    public function test正常系_検索文字列有り_未ログイン_所有者なしゲーム(): void
     {
         Game::factory()->create(['title' => 'bb']);
         $response = $this->json('GET', 'api/games?title=bb');
         $response->assertStatus(200);
 
-        $response->assertJson([
+        $response->assertExactJson([
             'data' => [
                 [
                     'id' => 1,
@@ -216,6 +226,94 @@ class IndexTest extends TestCase
                     'favorited' => false,
                     'owner' => false,
                 ]
+            ]
+        ]);
+    }
+
+    public function test正常系_ページ指定あり(): void
+    {
+        $user1 = User::factory()->create();
+
+        $user1->games()->createMany([
+            ['title' => 'ccc'],
+            ['title' => 'aabb'],
+            ['title' => 'bbaa'],
+            ['title' => 'bbaacc'],
+            ['title' => 'aa4'],
+            ['title' => 'aa5'],
+            ['title' => 'aa6'],
+        ]);
+
+        $response = $this->json('GET', 'api/games?title=aa&page=2');
+        $response->assertStatus(200);
+
+        $response->assertExactJson([
+            'data' => [
+                [
+                    'id' => 7,
+                    'title' => 'aa6',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
+            ]
+        ]);
+    }
+
+    public function test正常系_ページ指定あり_ページ番号が不正の場合１ページ目を表示(): void
+    {
+        $user1 = User::factory()->create();
+
+        $user1->games()->createMany([
+            ['title' => 'ccc'],
+            ['title' => 'aabb'],
+            ['title' => 'bbaa'],
+            ['title' => 'bbaacc'],
+            ['title' => 'aa4'],
+            ['title' => 'aa5'],
+            ['title' => 'aa6'],
+        ]);
+
+        $response = $this->json('GET', 'api/games?title=aa&page=hoge');
+        $response->assertStatus(200);
+
+        $response->assertExactJson([
+            'data' => [
+                [
+                    'id' => 2,
+                    'title' => 'aabb',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'bbaa',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
+                [
+                    'id' => 4,
+                    'title' => 'bbaacc',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
+                [
+                    'id' => 5,
+                    'title' => 'aa4',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
+                [
+                    'id' => 6,
+                    'title' => 'aa5',
+                    'favorites_count' => 0,
+                    'favorited' => false,
+                    'owner' => false,
+                ],
             ]
         ]);
     }

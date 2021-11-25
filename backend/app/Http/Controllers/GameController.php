@@ -25,12 +25,19 @@ class GameController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $title = $request->query('title');
+        $page = $request->query('page');
+
+        if (is_numeric($page)) {
+            $page = (int)$page;
+        } else {
+            $page = 1;
+        }
 
         if (!$title) {
             return GameResource::collection([]);
         }
 
-        $games = Game::with(['favorites'])->where('title', 'LIKE', "%$title%")->limit(5)->get();
+        $games = Game::with(['favorites'])->where('title', 'LIKE', "%$title%")->offset(($page - 1) * 5)->limit(5)->get();
 
         return GameResource::collection($games);
     }
