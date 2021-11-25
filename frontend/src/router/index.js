@@ -168,6 +168,15 @@ const routes = [
     name: "Error",
     component: Error,
   },
+  {
+    path: "*",
+    name: "NotFound",
+    component: Error,
+    beforeEnter(to, from, next) {
+      store.dispatch("error/setStatus", 404);
+      next();
+    },
+  },
 ];
 
 const router = new VueRouter({

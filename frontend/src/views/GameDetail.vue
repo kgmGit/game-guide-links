@@ -250,8 +250,10 @@ export default {
     } finally {
       this.processing = false;
     }
-    this.fetchSites();
-    this.fetchArticles();
+    if (this.game) {
+      this.fetchSites();
+      this.fetchArticles();
+    }
   },
 };
 </script>

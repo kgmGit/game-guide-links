@@ -47,8 +47,10 @@ export default {
   },
   async created() {
     await this.fetchArticle();
-    const titles = this.articles.map((article) => article.game_title);
-    this.gameTitles = [...new Set(titles)];
+    if (this.articles) {
+      const titles = this.articles.map((article) => article.game_title);
+      this.gameTitles = [...new Set(titles)];
+    }
   },
 };
 </script>

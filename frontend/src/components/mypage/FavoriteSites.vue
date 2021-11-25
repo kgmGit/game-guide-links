@@ -45,8 +45,10 @@ export default {
   },
   async created() {
     await this.fetchSites();
-    const titles = this.sites.map((site) => site.game_title);
-    this.gameTitles = [...new Set(titles)];
+    if (this.sites) {
+      const titles = this.sites.map((site) => site.game_title);
+      this.gameTitles = [...new Set(titles)];
+    }
   },
 };
 </script>

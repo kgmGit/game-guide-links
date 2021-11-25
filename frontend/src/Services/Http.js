@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "@/store";
 
 export const http = axios.create({
   withCredentials: true,
@@ -13,6 +14,7 @@ http.interceptors.response.use(
     return response;
   },
   async (error) => {
+    store.dispatch("error/setStatus", error.response.status);
     throw error;
   }
 );
