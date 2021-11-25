@@ -11,6 +11,7 @@ import MyPageProfile from "@/components/mypage/Profile.vue";
 import GameDetail from "@/views/GameDetail.vue";
 import ArticleDetail from "@/views/article/ArticleDetail.vue";
 import ArticleEdit from "@/views/article/ArticleEdit.vue";
+import SiteDetail from "@/views/site/SiteDetail.vue";
 import SiteEdit from "@/views/site/SiteEdit.vue";
 import FavoriteGames from "@/components/mypage/FavoriteGames.vue";
 import PostGames from "@/components/mypage/PostGames.vue";
@@ -119,6 +120,11 @@ const routes = [
     path: "/games/:game_title/sites/add",
     name: "SiteAdd",
     component: SiteEdit,
+  },
+  {
+    path: "/games/:game_title/sites/:id",
+    name: "SiteDetail",
+    component: SiteDetail,
   },
   {
     path: "/games/:game_title/sites/:id/edit",
