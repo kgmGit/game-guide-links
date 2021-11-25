@@ -13,6 +13,7 @@ import ArticleDetail from "@/views/article/ArticleDetail.vue";
 import ArticleEdit from "@/views/article/ArticleEdit.vue";
 import SiteEdit from "@/views/site/SiteEdit.vue";
 import FavoriteGames from "@/components/mypage/FavoriteGames.vue";
+import PostGames from "@/components/mypage/PostGames.vue";
 import FavoriteSites from "@/components/mypage/FavoriteSites.vue";
 import PostSites from "@/components/mypage/PostSites.vue";
 import FavoriteArticles from "@/components/mypage/FavoriteArticles.vue";
@@ -81,6 +82,10 @@ const routes = [
       {
         path: "favorites/articles",
         component: FavoriteArticles,
+      },
+      {
+        path: "posts/games",
+        component: PostGames,
       },
       {
         path: "posts/sites",
@@ -157,15 +162,6 @@ const routes = [
     name: "Error",
     component: Error,
   },
-  // {
-  //   path: "/about",
-  //   name: "About",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
-  // },
 ];
 
 const router = new VueRouter({

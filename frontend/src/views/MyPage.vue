@@ -20,6 +20,9 @@
 
             <b-list-group-item>
               <b-dropdown block variant="outline-dark" text="投稿">
+                <b-dropdown-item to="/mypage/posts/games"
+                  >ゲーム</b-dropdown-item
+                >
                 <b-dropdown-item to="/mypage/posts/sites"
                   >攻略サイト</b-dropdown-item
                 >

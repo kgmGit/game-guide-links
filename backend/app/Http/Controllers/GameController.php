@@ -105,6 +105,20 @@ class GameController extends Controller
     }
 
     /**
+     * 投稿ゲーム一覧取得
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function posts(): AnonymousResourceCollection
+    {
+        $user = auth()->user();
+
+        $games = $user->games()->with(['favorites'])->get();
+
+        return GameResource::collection($games);
+    }
+
+    /**
      * お気に入り登録
      *
      * @param Game $game
