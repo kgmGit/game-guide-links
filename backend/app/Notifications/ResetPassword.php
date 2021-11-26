@@ -22,7 +22,7 @@ class ResetPassword extends ResetPasswordFramework implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(Lang::get('パスワード再設定のお知らせ'))
-            ->line(Lang::get('このメールは、アカウントのリセットリクエストを受け取ったため、送信しています。'))
+            ->line(Lang::get('このメールは、パスワードのリセットリクエストを受け取ったため、送信しています。'))
             ->action(Lang::get('パスワードリセット'), $url)
             ->line(Lang::get('このリンクは :count 分で失効します。', ['count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire')]))
             ->line(Lang::get('パスワードの再設定が不要の場合、作業は必要ありません。'));
