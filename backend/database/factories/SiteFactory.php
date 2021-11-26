@@ -22,9 +22,9 @@ class SiteFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->country,
+            'title' => $this->faker->realText(20),
             'url' => $this->faker->url,
-            'description' => $this->faker->sentence
+            'description' => $this->faker->realText(200)
         ];
     }
 }
