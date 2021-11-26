@@ -7,11 +7,7 @@
             <div class="text-center">{{ title }}</div>
           </b-link>
         </template>
-        <b-card-body>
-          <sites
-            :propSites="sites.filter((site) => site.game_title === title)"
-          />
-        </b-card-body>
+        <sites :propSites="sites.filter((site) => site.game_title === title)" />
       </b-card>
     </div>
   </div>

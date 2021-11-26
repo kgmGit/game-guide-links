@@ -33,57 +33,53 @@
             @reported="$refs['report-modal'].hide()"
           />
         </b-modal>
-
-        <b-row class="mt-5">
-          <b-col sm="6">
-            <b-card>
-              <template #header>
-                <div class="text-center">攻略サイト</div>
-              </template>
-
-              <b-card-body>
-                <div v-if="isVerified">
-                  <b-button
-                    :to="$route.path + '/sites/add'"
-                    size="lg"
-                    block
-                    variant="primary"
-                    >新規登録</b-button
-                  >
-                  <hr v-if="hasSites" class="my-4" />
-                </div>
-                <div v-if="hasSites">
-                  <sites :propSites="sites" />
-                </div>
-              </b-card-body>
-            </b-card>
-          </b-col>
-
-          <b-col sm="6">
-            <b-card>
-              <template #header>
-                <div class="text-center">攻略記事</div>
-              </template>
-
-              <b-card-body>
-                <div v-if="isVerified">
-                  <b-button
-                    :to="$route.path + '/articles/add'"
-                    size="lg"
-                    block
-                    variant="primary"
-                    >新規登録</b-button
-                  >
-                  <hr v-if="hasArticles" class="my-4" />
-                </div>
-                <div v-if="hasArticles">
-                  <articles :propArticles="articles" />
-                </div>
-              </b-card-body>
-            </b-card>
-          </b-col>
-        </b-row>
       </b-card-body>
+
+      <b-row class="mt-5">
+        <b-col lg="6" class="mb-5">
+          <b-card>
+            <template #header>
+              <div class="text-center">攻略サイト</div>
+            </template>
+
+            <div v-if="isVerified">
+              <b-button
+                :to="$route.path + '/sites/add'"
+                size="lg"
+                block
+                variant="primary"
+                >新規登録</b-button
+              >
+              <hr v-if="hasSites" class="my-4" />
+            </div>
+            <div v-if="hasSites">
+              <sites :propSites="sites" />
+            </div>
+          </b-card>
+        </b-col>
+
+        <b-col lg="6">
+          <b-card>
+            <template #header>
+              <div class="text-center">攻略記事</div>
+            </template>
+
+            <div v-if="isVerified">
+              <b-button
+                :to="$route.path + '/articles/add'"
+                size="lg"
+                block
+                variant="primary"
+                >新規登録</b-button
+              >
+              <hr v-if="hasArticles" class="my-4" />
+            </div>
+            <div v-if="hasArticles">
+              <articles :propArticles="articles" />
+            </div>
+          </b-card>
+        </b-col>
+      </b-row>
     </b-card>
   </div>
 </template>

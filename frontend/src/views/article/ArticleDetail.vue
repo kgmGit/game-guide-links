@@ -18,14 +18,12 @@
             by {{ article.owner_name }}
           </h5>
         </template>
-        <b-card-body>
-          <b-card header="概要">
-            {{ article.outline }}
-          </b-card>
-          <b-card class="mt-3">
-            <div v-html="article.content" class="ql-editor"></div>
-          </b-card>
-        </b-card-body>
+        <b-card header="概要">
+          {{ article.outline }}
+        </b-card>
+        <b-card class="mt-3">
+          <div v-html="article.content" class="ql-editor"></div>
+        </b-card>
       </b-card>
     </b-card>
   </div>

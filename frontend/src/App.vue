@@ -4,7 +4,7 @@
       <navbar />
     </header>
     <main class="mt-5">
-      <b-container fluid="sm">
+      <b-container fluid="lg">
         <message />
         <router-view />
       </b-container>

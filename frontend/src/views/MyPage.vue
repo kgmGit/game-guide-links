@@ -1,7 +1,7 @@
 <template>
   <b-row align-h="center">
-    <b-col sm="3">
-      <b-card header="メニュー">
+    <b-col xl="3" lg="4">
+      <b-card header="メニュー" class="mb-5">
         <b-card-body>
           <b-list-group>
             <div v-if="isVerified">
@@ -33,15 +33,17 @@
                 </b-dropdown>
               </b-list-group-item>
             </div>
-            <b-list-group-item to="/mypage/profile"
-              >ユーザ情報</b-list-group-item
+            <b-list-group-item>
+              <b-button to="/mypage/profile" block variant="outline-dark"
+                >ユーザ情報</b-button
+              ></b-list-group-item
             >
           </b-list-group>
         </b-card-body>
       </b-card>
     </b-col>
 
-    <b-col sm="7">
+    <b-col xl="7" lg="8">
       <router-view></router-view>
     </b-col>
   </b-row>

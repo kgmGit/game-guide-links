@@ -16,16 +16,14 @@
           </div>
           <h5 class="text-right text-muted small">by {{ site.owner_name }}</h5>
         </template>
-        <b-card-body>
-          <b-card>
-            <template #header>
-              <b-link :href="site.url">{{ site.url }}</b-link>
-            </template>
-            <b-card-body class="content">
-              {{ site.description }}
-            </b-card-body>
-          </b-card>
-        </b-card-body>
+        <b-card>
+          <template #header>
+            <b-link :href="site.url">{{ site.url }}</b-link>
+          </template>
+          <b-card-body class="content">
+            {{ site.description }}
+          </b-card-body>
+        </b-card>
       </b-card>
     </b-card>
   </div>

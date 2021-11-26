@@ -8,7 +8,7 @@
               <div class="text-center">{{ game.title }}</div>
             </b-link>
           </b-col>
-          <b-col sm="2">
+          <b-col sm="2" class="text-right">
             <favorite
               :count="game.favorites_count"
               :favorited="game.favorited"

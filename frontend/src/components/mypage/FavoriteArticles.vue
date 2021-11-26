@@ -7,13 +7,11 @@
             <div class="text-center">{{ title }}</div>
           </b-link>
         </template>
-        <b-card-body>
-          <articles
-            :propArticles="
-              articles.filter((article) => article.game_title === title)
-            "
-          />
-        </b-card-body>
+        <articles
+          :propArticles="
+            articles.filter((article) => article.game_title === title)
+          "
+        />
       </b-card>
     </div>
   </div>

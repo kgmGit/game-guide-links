@@ -1,6 +1,6 @@
 <template>
   <div v-if="site">
-    <b-card class="item">
+    <b-card>
       <template #header>
         <b-link
           :to="`/games/${site.game_title}/sites/${site.id}${
@@ -75,9 +75,6 @@ export default {
 </script>
 
 <style scoped>
-.item {
-  height: 17em;
-}
 .content {
   height: 6em;
   overflow-y: auto;
