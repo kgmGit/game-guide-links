@@ -16,7 +16,9 @@
 
         <b-navbar-nav class="ml-auto">
           <b-nav-item v-show="isAdmin" to="/reports">通報内容確認</b-nav-item>
-          <b-nav-item v-show="isAuth" to="/mypage/favorites/games"
+          <b-nav-item
+            v-show="isAuth"
+            :to="isVerified ? '/mypage/favorites/games' : '/mypage/profile'"
             >マイページ</b-nav-item
           >
         </b-navbar-nav>
