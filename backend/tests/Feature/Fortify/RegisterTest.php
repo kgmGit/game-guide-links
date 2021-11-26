@@ -36,6 +36,8 @@ class RegisterTest extends TestCase
         $this->assertEquals($body['name'], $user->name);
         $this->assertEquals($body['email'], $user->email);
         $this->assertTrue(Hash::check($body['password'], $user->password));
+        $this->assertNull($user->email_verified_at);
+        $this->assertEquals(false, $user->admin);
 
         Notification::assertSentTo($user, VerifyEmail::class);
     }
