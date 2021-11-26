@@ -7,6 +7,7 @@
       @input="onInput"
       autocomplete="off"
       maxlength="30"
+      autofocus
     ></b-form-input>
     <div class="mt-2 mb-5">
       <transition-group name="games">

@@ -42,6 +42,7 @@
                   rows="3"
                   :state="valid"
                   v-model="content"
+                  autofocus
                 ></b-form-textarea>
                 <b-form-invalid-feedback :state="valid">
                   {{ errors[0] }}

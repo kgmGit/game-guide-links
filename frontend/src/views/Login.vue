@@ -19,6 +19,7 @@
                   :state="valid"
                   maxlength="255"
                   v-model="form.email"
+                  autofocus
                 ></b-form-input>
                 <b-form-invalid-feedback :state="valid">
                   {{ errors[0] }}
