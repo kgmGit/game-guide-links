@@ -22,7 +22,7 @@ class GameFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->unique()->realText(30),
+            'title' => 'テストデータ-' . $this->faker->unique()->realText(23),
         ];
     }
 }
