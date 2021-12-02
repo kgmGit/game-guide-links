@@ -31,17 +31,12 @@ class StoreTest extends TestCase
         $response = $this->json('POST', 'api/games/game_title/sites', $body);
 
         $response->assertStatus(201)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'title' => $body['title'],
                     'url' => $body['url'],
                     'description' => $body['description'],
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 0,
-                    'liked' => false,
-                    'owner' => true,
                     'owner_name' => $user->name,
                     'game_title' => 'game_title'
                 ]

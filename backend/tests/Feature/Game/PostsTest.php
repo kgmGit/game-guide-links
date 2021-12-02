@@ -12,7 +12,7 @@ class PostsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test正常系_投稿ゲーム複数(): void
+    public function test正常系(): void
     {
         /** @var User $loginUser */
         $loginUser = User::factory()->create(['name' => 'loginUser']);
@@ -26,47 +26,20 @@ class PostsTest extends TestCase
         $response = $this->json('GET', 'api/posts/games');
         $response->assertStatus(200);
 
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'game_title1',
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'owner' => true,
-                ],
-                [
-                    'id' => 2,
-                    'title' => 'game_title2',
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'owner' => true,
-                ],
-            ]
-        ]);
-    }
-
-    public function test正常系_お気に入りあり(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create(['name' => 'name']);
-        $game = Game::factory()->for($user)->create(['title' => 'game_title']);
-        $game->favoriteUsers()->attach($user->id);
-
-        $this->actingAs($user);
-        $response = $this->json('GET', 'api/posts/games');
-        $response->assertStatus(200);
-
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'game_title',
-                    'favorites_count' => 1,
-                    'favorited' => true,
-                    'owner' => true,
-                ],
-            ]
+        $response->assertJsonCount(2, 'data')
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => 1,
+                        'title' => 'game_title1',
+                        'owner' => true,
+                    ],
+                    [
+                        'id' => 2,
+                        'title' => 'game_title2',
+                        'owner' => true,
+                    ],
+                ]
         ]);
     }
 

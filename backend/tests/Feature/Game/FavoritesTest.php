@@ -12,7 +12,7 @@ class FavoritesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test正常系_お気に入りゲーム複数(): void
+    public function test正常系(): void
     {
         /** @var User $loginUser */
         $loginUser = User::factory()->create(['name' => 'loginUser']);
@@ -31,21 +31,20 @@ class FavoritesTest extends TestCase
         $response = $this->json('GET', 'api/favorites/games');
         $response->assertStatus(200);
 
-        $response->assertExactJson([
+        $response->assertJsonCount(2, 'data')
+            ->assertJson([
             'data' => [
                 [
                     'id' => 1,
                     'title' => 'game_title1',
                     'favorites_count' => 1,
                     'favorited' => true,
-                    'owner' => true,
                 ],
                 [
                     'id' => 2,
                     'title' => 'game_title2',
                     'favorites_count' => 1,
                     'favorited' => true,
-                    'owner' => false,
                 ],
             ]
         ]);

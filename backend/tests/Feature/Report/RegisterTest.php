@@ -32,7 +32,7 @@ class RegisterTest extends TestCase
         $response = $this->json('POST', 'api/games/game_title/report', $body);
 
         $response->assertStatus(201)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'reportable_type' => Game::class,
@@ -64,7 +64,7 @@ class RegisterTest extends TestCase
         $response = $this->json('POST', 'api/sites/1/report', $body);
 
         $response->assertStatus(201)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'reportable_type' => Site::class,
@@ -96,7 +96,7 @@ class RegisterTest extends TestCase
         $response = $this->json('POST', 'api/articles/1/report', $body);
 
         $response->assertStatus(201)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'reportable_type' => Article::class,

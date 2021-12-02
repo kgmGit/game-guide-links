@@ -37,16 +37,12 @@ class UpdateTest extends TestCase
         $response = $this->json('PATCH', 'api/games/game_title/sites/1', $body);
 
         $response->assertStatus(200)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'title' => $body['title'],
                     'url' => $body['url'],
                     'description' => $body['description'],
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 0,
-                    'liked' => false,
                     'owner' => true,
                     'owner_name' => $user->name,
                     'game_title' => 'game_title'
@@ -85,16 +81,12 @@ class UpdateTest extends TestCase
         $response = $this->json('PATCH', 'api/games/game_title/sites/1', $body);
 
         $response->assertStatus(200)
-            ->assertExactJson([
+            ->assertJson([
                 'data' => [
                     'id' => 1,
                     'title' => $body['title'],
                     'url' => $body['url'],
                     'description' => $body['description'],
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 0,
-                    'liked' => false,
                     'owner' => false,
                     'owner_name' => $user->name,
                     'game_title' => 'game_title'

@@ -32,8 +32,6 @@ class StoreTest extends TestCase
             'data' => [
                 'id' => 1,
                 'title' => 'title',
-                'favorites_count' => 0,
-                'favorited' => false,
                 'owner' => true,
             ]
         ]);

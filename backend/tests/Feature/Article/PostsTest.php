@@ -13,7 +13,7 @@ class PostsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test正常系_投稿記事複数(): void
+    public function test正常系(): void
     {
         /** @var User $loginUser */
         $loginUser = User::factory()->create(['name' => 'loginUser']);
@@ -23,15 +23,12 @@ class PostsTest extends TestCase
         $game->articles()->saveMany([
             Article::factory()->for($loginUser)->make([
                 'title' => 'loginUserArticleTitle',
-                'outline' => 'loginUserArticleOutline',
             ]),
             Article::factory()->for($loginUser)->make([
                 'title' => 'loginUserArticleTitleTwo',
-                'outline' => 'loginUserArticleOutlineTwo',
             ]),
             Article::factory()->for($otherUser)->make([
                 'title' => 'otherUserArticleTitle',
-                'outline' => 'otherUserArticleOutline',
             ]),
         ]);
 
@@ -39,105 +36,20 @@ class PostsTest extends TestCase
         $response = $this->json('GET', 'api/posts/articles');
         $response->assertStatus(200);
 
-        $response->assertExactJson([
+        $response->assertJsonCount(2, 'data')
+            ->assertJson([
             'data' => [
                 [
                     'id' => 1,
                     'title' => 'loginUserArticleTitle',
-                    'outline' => 'loginUserArticleOutline',
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 0,
-                    'liked' => false,
                     'owner' => true,
                     'owner_name' => 'loginUser',
-                    'game_title' => 'game_title',
                 ],
                 [
                     'id' => 2,
                     'title' => 'loginUserArticleTitleTwo',
-                    'outline' => 'loginUserArticleOutlineTwo',
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 0,
-                    'liked' => false,
                     'owner' => true,
                     'owner_name' => 'loginUser',
-                    'game_title' => 'game_title',
-                ],
-            ]
-        ]);
-    }
-
-    public function test正常系_お気に入りあり(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create(['name' => 'name']);
-
-        $game = Game::factory()->create(['title' => 'game_title']);
-        $game->articles()->save(
-            $article = Article::factory()->for($user)->make([
-                'title' => 'title',
-                'outline' => 'outline',
-            ])
-        );
-
-        $article->favorites()->save($user->favorites()->make());
-
-        $this->actingAs($user);
-        $response = $this->json('GET', 'api/posts/articles');
-        $response->assertStatus(200);
-
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'title',
-                    'outline' => 'outline',
-                    'favorites_count' => 1,
-                    'favorited' => true,
-                    'likes_count' => 0,
-                    'liked' => false,
-                    'owner' => true,
-                    'owner_name' => 'name',
-                    'game_title' => 'game_title'
-                ],
-            ]
-        ]);
-    }
-
-    public function test正常系_いいねあり(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create(['name' => 'name']);
-
-        $game = Game::factory()->create(['title' => 'game_title']);
-        $game->articles()->save(
-            $article = Article::factory()->for($user)->make([
-                'title' => 'title',
-                'outline' => 'outline',
-            ])
-        );
-
-        $article->likes()->save($user->likes()->make());
-
-        $this->actingAs($user);
-        $response = $this->json('GET', 'api/games/game_title/articles');
-        $response->assertStatus(200);
-
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'title',
-                    'outline' => 'outline',
-                    'favorites_count' => 0,
-                    'favorited' => false,
-                    'likes_count' => 1,
-                    'liked' => true,
-                    'owner' => true,
-                    'owner_name' => 'name',
-                    'game_title' => 'game_title',
                 ],
             ]
         ]);

@@ -13,7 +13,7 @@ class FavoritesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test正常系_お気に入り記事複数(): void
+    public function test正常系(): void
     {
         /** @var User $loginUser */
         $loginUser = User::factory()->create(['name' => 'loginUser']);
@@ -24,15 +24,12 @@ class FavoritesTest extends TestCase
         $game->articles()->saveMany([
             $favoriteArticle1 = Article::factory()->for($otherUser)->make([
                 'title' => 'otherUserArticleTitle',
-                'outline' => 'otherUserArticleOutline',
             ]),
             Article::factory()->for($otherUser)->make([
                 'title' => 'notFavoriteSiteTitle',
-                'outline' => 'notFavoriteArticleOutline',
             ]),
             $favoriteArticle2 = Article::factory()->for($deleteUser)->make([
                 'title' => 'deleteUserSiteTitle',
-                'outline' => 'deleteUserArticleOutline',
             ]),
         ]);
         $loginUser->favorites()->saveMany([
@@ -46,71 +43,22 @@ class FavoritesTest extends TestCase
         $response = $this->json('GET', 'api/favorites/articles');
         $response->assertStatus(200);
 
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'otherUserArticleTitle',
-                    'outline' => 'otherUserArticleOutline',
-                    'favorites_count' => 1,
-                    'favorited' => true,
-                    'likes_count' => 0,
-                    'liked' => false,
-                    'owner' => false,
-                    'owner_name' => 'otherUser',
-                    'game_title' => 'game_title',
-                ],
-                [
-                    'id' => 3,
-                    'title' => 'deleteUserSiteTitle',
-                    'outline' => 'deleteUserArticleOutline',
-                    'favorites_count' => 1,
-                    'favorited' => true,
-                    'likes_count' => 0,
-                    'liked' => false,
-                    'owner' => false,
-                    'owner_name' => null,
-                    'game_title' => 'game_title',
-                ],
-            ]
-        ]);
-    }
-
-    public function test正常系_いいねあり(): void
-    {
-        /** @var User $user */
-        $user = User::factory()->create(['name' => 'name']);
-
-        $game = Game::factory()->create(['title' => 'game_title']);
-        $game->articles()->save(
-            $article = Article::factory()->for($user)->make([
-                'title' => 'title',
-                'outline' => 'outline',
-            ])
-        );
-
-        $user->favorites()->save($article->favorites()->make());
-        $user->likes()->save($article->likes()->make());
-
-        $this->actingAs($user);
-        $response = $this->json('GET', 'api/favorites/articles');
-        $response->assertStatus(200);
-
-        $response->assertExactJson([
-            'data' => [
-                [
-                    'id' => 1,
-                    'title' => 'title',
-                    'outline' => 'outline',
-                    'favorites_count' => 1,
-                    'favorited' => true,
-                    'likes_count' => 1,
-                    'liked' => true,
-                    'owner' => true,
-                    'owner_name' => 'name',
-                    'game_title' => 'game_title',
-                ],
-            ]
+        $response->assertJsonCount(2, 'data')
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => 1,
+                        'title' => 'otherUserArticleTitle',
+                        'favorites_count' => 1,
+                        'favorited' => true,
+                    ],
+                    [
+                        'id' => 3,
+                        'title' => 'deleteUserSiteTitle',
+                        'favorites_count' => 1,
+                        'favorited' => true,
+                    ],
+                ]
         ]);
     }
 
