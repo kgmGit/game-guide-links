@@ -15,7 +15,7 @@
         </div>
         <h5 class="d-flex justify-content-between text-muted small mt-2">
           <div>最終更新 : {{ update_at }}</div>
-          <div>by {{ article.owner_name }}</div>
+          <div>by {{ article.owner_name || "(退会済みユーザ)" }}</div>
         </h5>
       </template>
       <b-card header="概要">
