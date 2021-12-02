@@ -9,99 +9,97 @@
         </b-link>
       </template>
 
-      <b-card-body>
-        <ValidationObserver
-          ref="form"
-          v-slot="{ invalid: voInvalid, handleSubmit }"
-        >
-          <b-form @submit.prevent="handleSubmit(registerOrUpdate)">
-            <b-form-group label="タイトル" label-for="title">
-              <ValidationProvider
-                immediate
-                vid="title"
-                rules="required|max:20"
-                v-slot="{ errors, valid }"
-              >
-                <b-form-input
-                  id="title"
-                  :state="valid"
-                  maxlength="20"
-                  v-model="form.title"
-                  autofocus
-                ></b-form-input>
-                <b-form-invalid-feedback :state="valid">
-                  {{ errors[0] }}
-                </b-form-invalid-feedback>
-              </ValidationProvider>
-            </b-form-group>
-
-            <b-form-group label="URL" label-for="url">
-              <ValidationProvider
-                immediate
-                vid="url"
-                rules="required|url: {require_protocol: true }|max:255"
-                v-slot="{ errors, valid }"
-              >
-                <b-form-input
-                  id="url"
-                  maxlength="255"
-                  :state="valid"
-                  v-model="form.url"
-                ></b-form-input>
-                <b-form-invalid-feedback :state="valid">
-                  {{ errors[0] }}
-                </b-form-invalid-feedback>
-              </ValidationProvider>
-            </b-form-group>
-
-            <b-form-group label="説明" label-for="description">
-              <ValidationProvider
-                immediate
-                vid="description"
-                rules="required|max:200"
-                v-slot="{ errors, valid }"
-              >
-                <b-form-textarea
-                  id="description"
-                  max-rows="3"
-                  rows="3"
-                  :state="valid"
-                  v-model="form.description"
-                ></b-form-textarea>
-                <b-form-invalid-feedback :state="valid">
-                  {{ errors[0] }}
-                </b-form-invalid-feedback>
-              </ValidationProvider>
-            </b-form-group>
-
-            <b-button
-              :disabled="voInvalid || processing"
-              size="lg"
-              block
-              type="submit"
-              variant="primary"
-              class="mt-5"
-              >{{ isEdit ? "更新" : "登録" }}</b-button
+      <ValidationObserver
+        ref="form"
+        v-slot="{ invalid: voInvalid, handleSubmit }"
+      >
+        <b-form @submit.prevent="handleSubmit(registerOrUpdate)">
+          <b-form-group label="タイトル" label-for="title">
+            <ValidationProvider
+              immediate
+              vid="title"
+              rules="required|max:20"
+              v-slot="{ errors, valid }"
             >
+              <b-form-input
+                id="title"
+                :state="valid"
+                maxlength="20"
+                v-model="form.title"
+                autofocus
+              ></b-form-input>
+              <b-form-invalid-feedback :state="valid">
+                {{ errors[0] }}
+              </b-form-invalid-feedback>
+            </ValidationProvider>
+          </b-form-group>
 
-            <b-button
-              v-if="isEdit"
-              :disabled="processing"
-              v-b-modal.confirm
-              size="lg"
-              block
-              type="button"
-              variant="danger"
-              class="mt-5"
-              >削除</b-button
+          <b-form-group label="URL" label-for="url">
+            <ValidationProvider
+              immediate
+              vid="url"
+              rules="required|url: {require_protocol: true }|max:255"
+              v-slot="{ errors, valid }"
             >
-          </b-form>
-        </ValidationObserver>
+              <b-form-input
+                id="url"
+                maxlength="255"
+                :state="valid"
+                v-model="form.url"
+              ></b-form-input>
+              <b-form-invalid-feedback :state="valid">
+                {{ errors[0] }}
+              </b-form-invalid-feedback>
+            </ValidationProvider>
+          </b-form-group>
 
-        <b-modal title="確認" @ok="deleteSite" id="confirm"
-          >攻略サイトを削除しますか？</b-modal
-        >
-      </b-card-body>
+          <b-form-group label="説明" label-for="description">
+            <ValidationProvider
+              immediate
+              vid="description"
+              rules="required|max:200"
+              v-slot="{ errors, valid }"
+            >
+              <b-form-textarea
+                id="description"
+                max-rows="4"
+                rows="4"
+                :state="valid"
+                v-model="form.description"
+              ></b-form-textarea>
+              <b-form-invalid-feedback :state="valid">
+                {{ errors[0] }}
+              </b-form-invalid-feedback>
+            </ValidationProvider>
+          </b-form-group>
+
+          <b-button
+            :disabled="voInvalid || processing"
+            size="lg"
+            block
+            type="submit"
+            variant="primary"
+            class="mt-5"
+            >{{ isEdit ? "更新" : "登録" }}</b-button
+          >
+
+          <b-button
+            v-if="isEdit"
+            :disabled="processing"
+            v-b-modal.confirm
+            size="lg"
+            block
+            type="button"
+            variant="danger"
+            class="mt-5"
+            >削除</b-button
+          >
+        </b-form>
+      </ValidationObserver>
+
+      <b-modal title="確認" @ok="deleteSite" id="confirm"
+        >攻略サイトを削除しますか？</b-modal
+      >
     </b-card>
   </div>
 </template>

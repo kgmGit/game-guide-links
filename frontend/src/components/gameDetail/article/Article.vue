@@ -16,26 +16,24 @@
         </div>
       </template>
 
-      <b-card-body>
-        <div class="content">
-          {{ article.outline }}
-        </div>
+      <div class="content mb-3">
+        {{ article.outline }}
+      </div>
 
-        <b-row align-h="end" class="mt-2">
-          <like
-            :count="article.likes_count"
-            :liked="article.liked"
-            @click="clickLike"
-          />
-          <favorite
-            :count="article.favorites_count"
-            :favorited="article.favorited"
-            @click="clickFavorite"
-            class="ml-3"
-          />
-          <report @click="clickReport" class="ml-3" />
-        </b-row>
-      </b-card-body>
+      <b-row align-h="end" class="mr-1">
+        <like
+          :count="article.likes_count"
+          :liked="article.liked"
+          @click="clickLike"
+        />
+        <favorite
+          :count="article.favorites_count"
+          :favorited="article.favorited"
+          @click="clickFavorite"
+          class="ml-3"
+        />
+        <report @click="clickReport" class="ml-3" />
+      </b-row>
     </b-card>
   </div>
 </template>
@@ -75,7 +73,7 @@ export default {
 
 <style scoped>
 .content {
-  height: 6em;
+  height: 8em;
   overflow-y: auto;
   white-space: pre-wrap;
 }

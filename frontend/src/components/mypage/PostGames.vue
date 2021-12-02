@@ -1,22 +1,27 @@
 <template>
-  <div v-if="games">
-    <div v-for="game in games" :key="game.id">
-      <b-card class="mb-5">
-        <b-row>
-          <b-col sm="10">
-            <b-link :to="'/games/' + game.title">
-              <div class="text-center">{{ game.title }}</div>
-            </b-link>
-          </b-col>
-          <b-col sm="2" class="text-right">
-            <favorite
-              :count="game.favorites_count"
-              :favorited="game.favorited"
-              @click="clickFavorite(game.title)"
-            />
-          </b-col>
-        </b-row>
-      </b-card>
+  <div>
+    <div class="border rounded bg-light p-2 mb-4 text-center">
+      投稿 - ゲーム
+    </div>
+    <div v-if="games">
+      <div v-for="game in games" :key="game.id">
+        <b-card class="mb-3">
+          <b-row>
+            <b-col sm="10">
+              <b-link :to="'/games/' + game.title">
+                <div class="text-center">{{ game.title }}</div>
+              </b-link>
+            </b-col>
+            <b-col sm="2" class="text-right">
+              <favorite
+                :count="game.favorites_count"
+                :favorited="game.favorited"
+                @click="clickFavorite(game.title)"
+              />
+            </b-col>
+          </b-row>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>

@@ -14,29 +14,28 @@
         <div class="text-right text-muted small">by {{ site.owner_name }}</div>
       </template>
 
-      <b-card-body>
-        <div class="content">
-          <b-link :href="site.url">{{ site.url }}</b-link>
-          <div class="mt-2">
-            {{ site.description }}
-          </div>
+      <div class="content mb-3">
+        <b-link :href="site.url">{{ site.url }}</b-link>
+        <hr />
+        <div class="mt-2">
+          {{ site.description }}
         </div>
+      </div>
 
-        <b-row align-h="end" class="mt-2">
-          <like
-            :count="site.likes_count"
-            :liked="site.liked"
-            @click="clickLike"
-          />
-          <favorite
-            :count="site.favorites_count"
-            :favorited="site.favorited"
-            @click="clickFavorite"
-            class="ml-3"
-          />
-          <report @click="clickReport" class="ml-3" />
-        </b-row>
-      </b-card-body>
+      <b-row align-h="end" class="mr-1">
+        <like
+          :count="site.likes_count"
+          :liked="site.liked"
+          @click="clickLike"
+        />
+        <favorite
+          :count="site.favorites_count"
+          :favorited="site.favorited"
+          @click="clickFavorite"
+          class="ml-3"
+        />
+        <report @click="clickReport" class="ml-3" />
+      </b-row>
     </b-card>
   </div>
 </template>
@@ -76,8 +75,11 @@ export default {
 
 <style scoped>
 .content {
-  height: 6em;
+  height: 8em;
   overflow-y: auto;
   white-space: pre-wrap;
+}
+hr {
+  margin: 8px 0px;
 }
 </style>

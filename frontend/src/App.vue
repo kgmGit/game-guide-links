@@ -23,3 +23,9 @@ export default {
   },
 };
 </script>
+
+<style >
+.card-body {
+  font-size: 14px;
+}
+</style>

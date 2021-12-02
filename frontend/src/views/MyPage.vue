@@ -2,44 +2,41 @@
   <b-row align-h="center">
     <b-col xl="3" lg="4">
       <b-card header="メニュー" class="mb-5">
-        <b-card-body>
-          <b-list-group>
-            <div v-if="isVerified">
-              <b-list-group-item>
-                <b-dropdown block variant="outline-dark" text="お気に入り">
-                  <b-dropdown-item to="/mypage/favorites/games"
-                    >ゲーム</b-dropdown-item
-                  >
-                  <b-dropdown-item to="/mypage/favorites/sites"
-                    >攻略サイト</b-dropdown-item
-                  >
-                  <b-dropdown-item to="/mypage/favorites/articles"
-                    >攻略記事</b-dropdown-item
-                  >
-                </b-dropdown>
-              </b-list-group-item>
-
-              <b-list-group-item>
-                <b-dropdown block variant="outline-dark" text="投稿">
-                  <b-dropdown-item to="/mypage/posts/games"
-                    >ゲーム</b-dropdown-item
-                  >
-                  <b-dropdown-item to="/mypage/posts/sites"
-                    >攻略サイト</b-dropdown-item
-                  >
-                  <b-dropdown-item to="/mypage/posts/articles"
-                    >攻略記事</b-dropdown-item
-                  >
-                </b-dropdown>
-              </b-list-group-item>
-            </div>
-            <b-list-group-item>
-              <b-button to="/mypage/profile" block variant="outline-dark"
-                >ユーザ情報</b-button
-              ></b-list-group-item
+        <div v-if="isVerified">
+          <b-dropdown
+            block
+            variant="outline-dark"
+            text="お気に入り"
+            class="mb-3"
+          >
+            <b-dropdown-item to="/mypage/favorites/games"
+              >ゲーム</b-dropdown-item
             >
-          </b-list-group>
-        </b-card-body>
+            <b-dropdown-item to="/mypage/favorites/sites"
+              >攻略サイト</b-dropdown-item
+            >
+            <b-dropdown-item to="/mypage/favorites/articles"
+              >攻略記事</b-dropdown-item
+            >
+          </b-dropdown>
+
+          <b-dropdown block variant="outline-dark" text="投稿" class="mb-3">
+            <b-dropdown-item to="/mypage/posts/games">ゲーム</b-dropdown-item>
+            <b-dropdown-item to="/mypage/posts/sites"
+              >攻略サイト</b-dropdown-item
+            >
+            <b-dropdown-item to="/mypage/posts/articles"
+              >攻略記事</b-dropdown-item
+            >
+          </b-dropdown>
+        </div>
+        <b-button
+          to="/mypage/profile"
+          block
+          variant="outline-dark"
+          class="mb-23"
+          >ユーザ情報</b-button
+        >
       </b-card>
     </b-col>
 

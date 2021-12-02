@@ -13,74 +13,72 @@
           </b-button>
         </h4>
       </template>
-      <b-card-body>
-        <b-row align-h="end">
-          <favorite
-            :count="game.favorites_count"
-            :favorited="game.favorited"
-            @click="clickFavorite"
-          />
-          <report @click="clickReport" class="ml-3" />
-        </b-row>
-
-        <b-modal ref="auth-modal" hide-header hide-footer>
-          <auth-modal />
-        </b-modal>
-
-        <b-modal ref="report-modal" size="lg" hide-header hide-footer>
-          <report-modal
-            :gameTitle="game.title"
-            @reported="$refs['report-modal'].hide()"
-          />
-        </b-modal>
-      </b-card-body>
-
-      <b-row class="mt-5">
-        <b-col lg="6" class="mb-5">
-          <b-card>
-            <template #header>
-              <div class="text-center">攻略サイト</div>
-            </template>
-
-            <div v-if="isVerified">
-              <b-button
-                :to="$route.path + '/sites/add'"
-                size="lg"
-                block
-                variant="primary"
-                >新規登録</b-button
-              >
-              <hr v-if="hasSites" class="my-4" />
-            </div>
-            <div v-if="hasSites">
-              <sites :propSites="sites" />
-            </div>
-          </b-card>
-        </b-col>
-
-        <b-col lg="6">
-          <b-card>
-            <template #header>
-              <div class="text-center">攻略記事</div>
-            </template>
-
-            <div v-if="isVerified">
-              <b-button
-                :to="$route.path + '/articles/add'"
-                size="lg"
-                block
-                variant="primary"
-                >新規登録</b-button
-              >
-              <hr v-if="hasArticles" class="my-4" />
-            </div>
-            <div v-if="hasArticles">
-              <articles :propArticles="articles" />
-            </div>
-          </b-card>
-        </b-col>
+      <b-row align-h="end" class="mr-2">
+        <favorite
+          :count="game.favorites_count"
+          :favorited="game.favorited"
+          @click="clickFavorite"
+        />
+        <report @click="clickReport" class="ml-3" />
       </b-row>
+
+      <b-modal ref="auth-modal" hide-header hide-footer>
+        <auth-modal />
+      </b-modal>
+
+      <b-modal ref="report-modal" size="lg" hide-header hide-footer>
+        <report-modal
+          :gameTitle="game.title"
+          @reported="$refs['report-modal'].hide()"
+        />
+      </b-modal>
     </b-card>
+
+    <b-row class="mt-2">
+      <b-col lg="6" class="mb-5">
+        <b-card>
+          <template #header>
+            <div class="text-center">攻略サイト</div>
+          </template>
+
+          <div v-if="isVerified">
+            <b-button
+              :to="$route.path + '/sites/add'"
+              size="lg"
+              block
+              variant="primary"
+              >新規登録</b-button
+            >
+            <hr v-if="hasSites" class="my-4" />
+          </div>
+          <div v-if="hasSites">
+            <sites :propSites="sites" />
+          </div>
+        </b-card>
+      </b-col>
+
+      <b-col lg="6">
+        <b-card>
+          <template #header>
+            <div class="text-center">攻略記事</div>
+          </template>
+
+          <div v-if="isVerified">
+            <b-button
+              :to="$route.path + '/articles/add'"
+              size="lg"
+              block
+              variant="primary"
+              >新規登録</b-button
+            >
+            <hr v-if="hasArticles" class="my-4" />
+          </div>
+          <div v-if="hasArticles">
+            <articles :propArticles="articles" />
+          </div>
+        </b-card>
+      </b-col>
+    </b-row>
   </div>
 </template>
 

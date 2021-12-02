@@ -1,29 +1,27 @@
 <template>
   <div>
-    <b-card>
-      <template #header>
-        <b-link :to="'/games/' + $route.params.game_title">
-          <h4 class="text-center">
-            {{ $route.params.game_title }}
-          </h4>
-        </b-link>
-      </template>
+    <div class="border rounded bg-light p-2 mb-4">
+      <b-link :to="'/games/' + $route.params.game_title">
+        <h4 class="text-center">
+          {{ $route.params.game_title }}
+        </h4>
+      </b-link>
+    </div>
 
-      <b-card v-if="site">
+    <b-card v-if="site">
+      <template #header>
+        <div class="text-center">
+          {{ site.title }}
+        </div>
+        <h5 class="text-right text-muted small">by {{ site.owner_name }}</h5>
+      </template>
+      <b-card>
         <template #header>
-          <div class="text-center">
-            {{ site.title }}
-          </div>
-          <h5 class="text-right text-muted small">by {{ site.owner_name }}</h5>
+          <b-link :href="site.url">{{ site.url }}</b-link>
         </template>
-        <b-card>
-          <template #header>
-            <b-link :href="site.url">{{ site.url }}</b-link>
-          </template>
-          <b-card-body class="content">
-            {{ site.description }}
-          </b-card-body>
-        </b-card>
+        <div class="content">
+          {{ site.description }}
+        </div>
       </b-card>
     </b-card>
   </div>

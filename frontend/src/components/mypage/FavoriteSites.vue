@@ -1,14 +1,21 @@
 <template>
-  <div v-if="gameTitles">
-    <div v-for="title in gameTitles" :key="title">
-      <b-card class="mb-5">
-        <template #header>
-          <b-link :to="'/games/' + title">
-            <div class="text-center">{{ title }}</div>
-          </b-link>
-        </template>
-        <sites :propSites="sites.filter((site) => site.game_title === title)" />
-      </b-card>
+  <div>
+    <div class="border rounded bg-light p-2 mb-4 text-center">
+      お気に入り - 攻略サイト
+    </div>
+    <div v-if="gameTitles">
+      <div v-for="title in gameTitles" :key="title">
+        <b-card class="mb-5">
+          <template #header>
+            <b-link :to="'/games/' + title">
+              <div class="text-center">{{ title }}</div>
+            </b-link>
+          </template>
+          <sites
+            :propSites="sites.filter((site) => site.game_title === title)"
+          />
+        </b-card>
+      </div>
     </div>
   </div>
 </template>
