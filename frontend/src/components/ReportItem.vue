@@ -9,9 +9,12 @@
       <b-card-text>{{ report.content }}</b-card-text>
     </b-card-body>
     <template #footer>
-      <b-row align-h="end">
-        <b-button class="mr-3" :to="getLinkUrl">確認</b-button>
-        <b-button @click="clickComplite">対応完了</b-button>
+      <b-row align-h="between">
+        <div class="ml-3">報告日時 : {{ created_at }}</div>
+        <div>
+          <b-button class="mr-3" :to="getLinkUrl">確認</b-button>
+          <b-button @click="clickComplite">対応完了</b-button>
+        </div>
       </b-row>
     </template>
   </b-card>
@@ -19,6 +22,7 @@
 
 <script>
 import { TYPE_GAME, TYPE_SITE, TYPE_ARTICLE } from "@/utils/const.js";
+import { unixTimestampToYmdHis } from "@/utils/formatters";
 
 export default {
   props: {
@@ -42,6 +46,9 @@ export default {
         default:
           return "";
       }
+    },
+    created_at() {
+      return unixTimestampToYmdHis(this.report.created_at);
     },
   },
   methods: {

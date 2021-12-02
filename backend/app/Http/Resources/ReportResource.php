@@ -22,6 +22,7 @@ class ReportResource extends JsonResource
             'content' => $this->content,
             'user_name' => $this->user->name,
             'game_title' => $this->game_title,
+            'created_at' => $this->created_at->timestamp,
         ];
     }
 }

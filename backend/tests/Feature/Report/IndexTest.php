@@ -4,6 +4,7 @@ namespace Tests\Feature\Report;
 
 use App\Models\Article;
 use App\Models\Game;
+use App\Models\Report;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -31,6 +32,9 @@ class IndexTest extends TestCase
 
         $response->dump();
 
+        $reportId1 = Report::find(1);
+        $reportId2 = Report::find(2);
+        $reportId3 = Report::find(3);
         $response->assertStatus(200)
             ->assertExactJson([
                 'data' => [
@@ -41,6 +45,7 @@ class IndexTest extends TestCase
                         'content' => 'game_report',
                         'user_name' => $user->name,
                         'game_title' => $game->title,
+                        'created_at' => $reportId1->created_at->timestamp,
                     ],
                     [
                         'id' => 2,
@@ -49,6 +54,7 @@ class IndexTest extends TestCase
                         'content' => 'site_report',
                         'user_name' => $user->name,
                         'game_title' => $game->title,
+                        'created_at' => $reportId2->created_at->timestamp,
                     ],
                     [
                         'id' => 3,
@@ -57,6 +63,7 @@ class IndexTest extends TestCase
                         'content' => 'article_report',
                         'user_name' => $user->name,
                         'game_title' => $game->title,
+                        'created_at' => $reportId3->created_at->timestamp,
                     ],
                 ]
                 ]);
