@@ -46,6 +46,9 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
+        $siteId1 = Site::find(1);
+        $siteId2 = Site::find(2);
+        $siteId3 = Site::find(3);
         $response->assertExactJson([
             'data' => [
                 [
@@ -60,6 +63,7 @@ class IndexTest extends TestCase
                     'owner' => true,
                     'owner_name' => 'loginUser',
                     'game_title' => 'aaa',
+                    'updated_at' => $siteId1->updated_at->timestamp,
                 ],
                 [
                     'id' => 2,
@@ -73,6 +77,7 @@ class IndexTest extends TestCase
                     'owner' => false,
                     'owner_name' => 'otherUser',
                     'game_title' => 'aaa',
+                    'updated_at' => $siteId2->updated_at->timestamp,
                 ],
                 [
                     'id' => 3,
@@ -86,6 +91,7 @@ class IndexTest extends TestCase
                     'owner' => false,
                     'owner_name' => null,
                     'game_title' => 'aaa',
+                    'updated_at' => $siteId3->updated_at->timestamp,
                 ],
             ]
         ]);
@@ -111,6 +117,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
+        $site = Site::first();
         $response->assertExactJson([
             'data' => [
                 [
@@ -124,7 +131,8 @@ class IndexTest extends TestCase
                     'liked' => false,
                     'owner' => true,
                     'owner_name' => 'name',
-                    'game_title' => 'aaa'
+                    'game_title' => 'aaa',
+                    'updated_at' => $site->updated_at->timestamp,
                 ],
             ]
         ]);
@@ -150,6 +158,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/sites');
         $response->assertStatus(200);
 
+        $site = Site::first();
         $response->assertExactJson([
             'data' => [
                 [
@@ -164,6 +173,7 @@ class IndexTest extends TestCase
                     'owner' => true,
                     'owner_name' => 'name',
                     'game_title' => 'aaa',
+                    'updated_at' => $site->updated_at->timestamp,
                 ],
             ]
         ]);

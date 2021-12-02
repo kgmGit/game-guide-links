@@ -30,6 +30,7 @@ class SiteResource extends JsonResource
             'owner' => auth()->check() ? $this->user_id == auth()->id() : false,
             'owner_name' => $this->user ? $this->user->name : null,
             'game_title' => $this->game->title,
+            'updated_at' => $this->updated_at->timestamp,
         ];
     }
 }

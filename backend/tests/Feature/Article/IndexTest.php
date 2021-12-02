@@ -42,6 +42,9 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/articles');
         $response->assertStatus(200);
 
+        $articleId1 = Article::find(1);
+        $articleId2 = Article::find(2);
+        $articleId3 = Article::find(3);
         $response->assertExactJson([
             'data' => [
                 [
@@ -55,6 +58,7 @@ class IndexTest extends TestCase
                     'owner' => true,
                     'owner_name' => 'loginUser',
                     'game_title' => 'aaa',
+                    'updated_at' => $articleId1->updated_at->timestamp,
                 ],
                 [
                     'id' => 2,
@@ -67,6 +71,7 @@ class IndexTest extends TestCase
                     'owner' => false,
                     'owner_name' => 'otherUser',
                     'game_title' => 'aaa',
+                    'updated_at' => $articleId2->updated_at->timestamp,
                 ],
                 [
                     'id' => 3,
@@ -79,6 +84,7 @@ class IndexTest extends TestCase
                     'owner' => false,
                     'owner_name' => null,
                     'game_title' => 'aaa',
+                    'updated_at' => $articleId3->updated_at->timestamp,
                 ],
             ]
         ]);
@@ -103,6 +109,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/articles');
         $response->assertStatus(200);
 
+        $article = Article::first();
         $response->assertExactJson([
             'data' => [
                 [
@@ -116,6 +123,7 @@ class IndexTest extends TestCase
                     'owner' => true,
                     'owner_name' => 'name',
                     'game_title' => 'aaa',
+                    'updated_at' => $article->updated_at->timestamp,
                 ],
             ]
         ]);
@@ -140,6 +148,7 @@ class IndexTest extends TestCase
         $response = $this->json('GET', 'api/games/aaa/articles');
         $response->assertStatus(200);
 
+        $article = Article::first();
         $response->assertExactJson([
             'data' => [
                 [
@@ -153,6 +162,7 @@ class IndexTest extends TestCase
                     'owner' => true,
                     'owner_name' => 'name',
                     'game_title' => 'aaa',
+                    'updated_at' => $article->updated_at->timestamp,
                 ],
             ]
         ]);

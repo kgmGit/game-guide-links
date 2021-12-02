@@ -13,7 +13,10 @@
         <div class="text-center">
           {{ article.title }}
         </div>
-        <h5 class="text-right text-muted small">by {{ article.owner_name }}</h5>
+        <h5 class="d-flex justify-content-between text-muted small mt-2">
+          <div>最終更新 : {{ update_at }}</div>
+          <div>by {{ article.owner_name }}</div>
+        </h5>
       </template>
       <b-card header="概要">
         {{ article.outline }}
@@ -27,12 +30,18 @@
 
 <script>
 import { http } from "@/Services/Http";
+import { unixTimestampToYmdHis } from "@/utils/formatters";
 
 export default {
   data() {
     return {
       article: null,
     };
+  },
+  computed: {
+    update_at() {
+      return unixTimestampToYmdHis(this.article.updated_at);
+    },
   },
   methods: {
     async fetchArticle(gameTitle, articleId) {

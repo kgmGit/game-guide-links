@@ -27,6 +27,7 @@ class ShowTest extends TestCase
         $response = $this->json('GET', 'api/games/game_title/articles/1');
         $response->assertStatus(200);
 
+        $article = Article::first();
         $response->assertExactJson([
             'data' => [
                 'id' => 1,
@@ -40,7 +41,8 @@ class ShowTest extends TestCase
                 'owner' => false,
                 'owner_name' => 'name',
                 'game_title' => 'game_title',
-                ]
+                'updated_at' => $article->updated_at->timestamp,
+            ]
         ]);
     }
 

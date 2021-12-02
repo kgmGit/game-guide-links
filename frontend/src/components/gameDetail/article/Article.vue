@@ -11,8 +11,9 @@
             {{ article.title }}
           </div>
         </b-link>
-        <div class="text-right text-muted small">
-          by {{ article.owner_name }}
+        <div class="d-flex justify-content-between text-muted small mt-2">
+          <div>最終更新 : {{ update_at }}</div>
+          <div>by {{ article.owner_name }}</div>
         </div>
       </template>
 
@@ -43,6 +44,7 @@ import Favorite from "@/components/Favorite.vue";
 import Like from "@/components/Like.vue";
 import Report from "@/components/Report.vue";
 import { mapGetters } from "vuex";
+import { unixTimestampToYmdHis } from "@/utils/formatters";
 
 export default {
   components: { Favorite, Like, Report },
@@ -56,6 +58,9 @@ export default {
     ...mapGetters({
       isAdmin: "auth/isAdmin",
     }),
+    update_at() {
+      return unixTimestampToYmdHis(this.article.updated_at);
+    },
   },
   methods: {
     clickLike() {

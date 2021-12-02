@@ -13,7 +13,10 @@
         <div class="text-center">
           {{ site.title }}
         </div>
-        <h5 class="text-right text-muted small">by {{ site.owner_name }}</h5>
+        <h5 class="d-flex justify-content-between text-muted small mt-2">
+          <div>最終更新 : {{ update_at }}</div>
+          <div>by {{ site.owner_name }}</div>
+        </h5>
       </template>
       <b-card>
         <template #header>
@@ -29,12 +32,18 @@
 
 <script>
 import { http } from "@/Services/Http";
+import { unixTimestampToYmdHis } from "@/utils/formatters";
 
 export default {
   data() {
     return {
       site: null,
     };
+  },
+  computed: {
+    update_at() {
+      return unixTimestampToYmdHis(this.site.updated_at);
+    },
   },
   methods: {
     async fetchSite(gameTitle, siteId) {
