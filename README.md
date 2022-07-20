@@ -1,4 +1,4 @@
-# [ゲーム攻略リンク](https://game-guide-links.com/)
+# [ゲーム攻略リンク（停止中）](https://game-guide-links.com/)
 
 ![image](./disp.png)
 
